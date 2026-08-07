@@ -7,6 +7,7 @@ import type {
   ItemFilters,
 } from "@/api/types";
 import { formatCurrency } from "@/utils/designTokens";
+import { Input, Select, StatusBadge, Button } from "./primitives";
 
 interface PhaseOption {
   id: string;
@@ -24,22 +25,6 @@ interface ItemTableProps {
   isLoading?: boolean;
   error?: Error | null;
 }
-
-const STATUS_COLORS: Record<ItemStatus, string> = {
-  NOT_STARTED: "bg-gray-100 text-gray-700",
-  IN_PROGRESS: "bg-blue-100 text-blue-700",
-  COMPLETED: "bg-green-100 text-green-700",
-  ON_HOLD: "bg-yellow-100 text-yellow-700",
-  CANCELLED: "bg-red-100 text-red-700",
-};
-
-const STATUS_LABELS: Record<ItemStatus, string> = {
-  NOT_STARTED: "Not Started",
-  IN_PROGRESS: "In Progress",
-  COMPLETED: "Completed",
-  ON_HOLD: "On Hold",
-  CANCELLED: "Cancelled",
-};
 
 const sortableColumns = [
   "name",
@@ -69,7 +54,7 @@ export function ItemTable({
     search: "",
     status: undefined,
     phaseId: undefined,
-    sortBy: initialFilters.sortBy || "code",
+    sortBy: initialFilters.sortBy || "name",
     sortOrder: initialFilters.sortOrder || "asc",
   });
 
@@ -177,9 +162,9 @@ export function ItemTable({
   // Loading state
   if (isLoading) {
     return (
-      <div className="bg-white rounded-lg border border-gray-200">
-        <div className="p-8 text-center text-gray-600">
-          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary-600 mx-auto mb-4"></div>
+      <div className="table-container">
+        <div className="p-8 text-center text-text-secondary">
+          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary-500 mx-auto mb-4"></div>
           Loading items...
         </div>
       </div>
@@ -189,8 +174,8 @@ export function ItemTable({
   // Error state
   if (error) {
     return (
-      <div className="bg-white rounded-lg border border-gray-200">
-        <div className="p-8 text-center text-red-600">
+      <div className="table-container">
+        <div className="p-8 text-center text-semantic-danger-main">
           <p className="font-medium">Failed to load items</p>
           <p className="text-sm mt-1">{error.message}</p>
         </div>
@@ -200,7 +185,7 @@ export function ItemTable({
 
   const renderSortableHeader = (label: string, key: string) => (
     <th
-      className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer hover:bg-gray-50 select-none"
+      className="px-4 py-3 text-left text-xs font-medium text-text-secondary uppercase tracking-wider cursor-pointer hover:bg-surface-secondary select-none transition-colors"
       onClick={() =>
         handleSort(
           key,
@@ -224,85 +209,68 @@ export function ItemTable({
     return phase ? phase.name : phaseId;
   };
 
+  const statusOptions: { value: string; label: string }[] = [
+    { value: "NOT_STARTED", label: "Not Started" },
+    { value: "IN_PROGRESS", label: "In Progress" },
+    { value: "COMPLETED", label: "Completed" },
+    { value: "ON_HOLD", label: "On Hold" },
+    { value: "CANCELLED", label: "Cancelled" },
+  ];
+
   return (
-    <div className="bg-white rounded-lg border border-gray-200 overflow-hidden">
+    <div className="table-container">
       {/* Filter Bar */}
-      <div className="p-4 border-b border-gray-200 bg-gray-50 flex flex-wrap gap-4 items-end">
+      <div className="p-4 border-b border-surface-divider bg-surface-secondary flex flex-wrap gap-4 items-end">
         <div className="flex-1 min-w-[200px]">
-          <label
-            htmlFor="search"
-            className="block text-xs font-medium text-gray-500 mb-1"
-          >
-            Search
-          </label>
-          <input
+          <Input
             id="search"
-            type="text"
             placeholder="Search by name..."
             value={localFilters.search || ""}
             onChange={(e) => handleFilterChange("search", e.target.value)}
-            className="w-full px-3 py-2 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-primary-500"
+            label="Search"
           />
         </div>
         <div className="min-w-[150px]">
-          <label
-            htmlFor="status-filter"
-            className="block text-xs font-medium text-gray-500 mb-1"
-          >
-            Status
-          </label>
-          <select
+          <Select
             id="status-filter"
             value={localFilters.status || ""}
             onChange={(e) =>
               handleFilterChange("status", e.target.value || undefined)
             }
-            className="w-full px-3 py-2 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-primary-500"
-          >
-            <option value="">All Statuses</option>
-            {Object.entries(STATUS_LABELS).map(([value, label]) => (
-              <option key={value} value={value}>
-                {label}
-              </option>
-            ))}
-          </select>
+            label="Status"
+            options={[{ value: "", label: "All Statuses" }, ...statusOptions]}
+          />
         </div>
         {showPhaseColumn && phases.length > 0 && (
           <div className="min-w-[150px]">
-            <label
-              htmlFor="phase-filter"
-              className="block text-xs font-medium text-gray-500 mb-1"
-            >
-              Phase
-            </label>
-            <select
+            <Select
               id="phase-filter"
               value={localFilters.phaseId || ""}
               onChange={(e) =>
                 handleFilterChange("phaseId", e.target.value || undefined)
               }
-              className="w-full px-3 py-2 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-primary-500"
-            >
-              <option value="">All Phases</option>
-              {phases.map((phase) => (
-                <option key={phase.id} value={phase.id}>
-                  {phase.name}
-                </option>
-              ))}
-            </select>
+              label="Phase"
+              options={[
+                { value: "", label: "All Phases" },
+                ...phases.map((phase) => ({
+                  value: phase.id,
+                  label: phase.name,
+                })),
+              ]}
+            />
           </div>
         )}
-        <div className="flex items-center gap-2 text-sm text-gray-600">
+        <div className="flex items-center gap-2 text-sm text-text-secondary">
           <span>
-            Showing {filteredItems.length} of {items.length} items
+            Showing {filteredItems.length} of {pagination.total} items
           </span>
         </div>
       </div>
 
       {/* Table */}
       <div className="overflow-x-auto">
-        <table className="min-w-full divide-y divide-gray-200">
-          <thead className="bg-gray-50">
+        <table className="table">
+          <thead>
             <tr>
               {renderSortableHeader("Name", "name")}
               {showPhaseColumn && renderSortableHeader("Phase", "phaseId")}
@@ -311,17 +279,17 @@ export function ItemTable({
               {renderSortableHeader("Amount", "amount")}
               {renderSortableHeader("Status", "status")}
               {renderSortableHeader("Progress", "progressPercent")}
-              <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+              <th className="px-4 py-3 text-left text-xs font-medium text-text-secondary uppercase tracking-wider">
                 Actions
               </th>
             </tr>
           </thead>
-          <tbody className="bg-white divide-y divide-gray-200">
+          <tbody>
             {filteredItems.length === 0 ? (
               <tr>
                 <td
                   colSpan={showPhaseColumn ? 8 : 7}
-                  className="px-4 py-8 text-center text-gray-500"
+                  className="px-4 py-8 text-center text-text-tertiary"
                 >
                   {items.length === 0
                     ? "No items available"
@@ -330,68 +298,59 @@ export function ItemTable({
               </tr>
             ) : (
               filteredItems.map((item) => (
-                <tr key={item._id} className="hover:bg-gray-50">
-                  <td className="px-4 py-3 text-sm text-gray-900">
+                <tr key={item._id}>
+                  <td className="px-4 py-3 text-sm text-text-primary">
                     {item.name}
                   </td>
                   {showPhaseColumn && (
-                    <td className="px-4 py-3 text-sm text-gray-600">
+                    <td className="px-4 py-3 text-sm text-text-secondary">
                       {getPhaseName(item.phaseId)}
                     </td>
                   )}
-                  <td className="px-4 py-3 text-sm text-gray-900">
+                  <td className="px-4 py-3 text-sm text-text-primary">
                     {item.quantity}
                   </td>
-                  <td className="px-4 py-3 text-sm text-gray-900">
+                  <td className="px-4 py-3 text-sm text-text-primary">
                     {formatCurrency(item.rate)}
                   </td>
-                  <td className="px-4 py-3 text-sm font-medium text-gray-900">
+                  <td className="px-4 py-3 text-sm font-medium text-text-primary">
                     {formatCurrency(item.amount)}
                   </td>
                   <td className="px-4 py-3 text-sm">
                     {editingId === item._id ? (
-                      <select
+                      <Select
                         value={editStatus}
                         onChange={(e) =>
                           setEditStatus(e.target.value as ItemStatus)
                         }
-                        className="text-sm border border-gray-300 rounded px-2 py-1 focus:outline-none focus:ring-1 focus:ring-primary-500"
-                      >
-                        {Object.entries(STATUS_LABELS).map(([value, label]) => (
-                          <option key={value} value={value}>
-                            {label}
-                          </option>
-                        ))}
-                      </select>
+                        options={statusOptions}
+                        className="w-full"
+                      />
                     ) : (
-                      <span
-                        className={`inline-flex px-2 py-1 text-xs font-medium rounded-full ${STATUS_COLORS[item.status]}`}
-                      >
-                        {STATUS_LABELS[item.status]}
-                      </span>
+                      <StatusBadge status={item.status} size="md" />
                     )}
                   </td>
                   <td className="px-4 py-3 text-sm">
                     {editingId === item._id ? (
-                      <input
+                      <Input
                         type="number"
-                        min="0"
-                        max="100"
+                        min={0}
+                        max={100}
                         value={editProgress}
                         onChange={(e) =>
                           setEditProgress(Number(e.target.value))
                         }
-                        className="w-20 text-sm border border-gray-300 rounded px-2 py-1 focus:outline-none focus:ring-1 focus:ring-primary-500"
+                        className="w-20"
                       />
                     ) : (
                       <div className="w-32">
-                        <div className="h-2 bg-gray-200 rounded-full overflow-hidden">
+                        <div className="h-2 bg-surface-tertiary rounded-full overflow-hidden">
                           <div
-                            className="h-full bg-primary-600 transition-all duration-300"
+                            className="h-full bg-primary-500 transition-all duration-300"
                             style={{ width: `${item.progressPercent}%` }}
                           />
                         </div>
-                        <span className="text-xs text-gray-500">
+                        <span className="text-xs text-text-tertiary">
                           {item.progressPercent}%
                         </span>
                       </div>
@@ -400,27 +359,30 @@ export function ItemTable({
                   <td className="px-4 py-3 text-sm">
                     {editingId === item._id ? (
                       <div className="flex gap-2">
-                        <button
+                        <Button
+                          size="sm"
                           onClick={() => handleSave(item)}
                           disabled={updateProgress.isPending}
-                          className="text-xs px-3 py-1 bg-primary-600 text-white rounded hover:bg-primary-700 disabled:opacity-50"
+                          isLoading={updateProgress.isPending}
                         >
                           Save
-                        </button>
-                        <button
+                        </Button>
+                        <Button
+                          size="sm"
+                          variant="ghost"
                           onClick={handleCancel}
-                          className="text-xs px-3 py-1 bg-gray-200 text-gray-700 rounded hover:bg-gray-300"
                         >
                           Cancel
-                        </button>
+                        </Button>
                       </div>
                     ) : (
-                      <button
+                      <Button
+                        size="sm"
+                        variant="ghost"
                         onClick={() => handleEditClick(item)}
-                        className="text-primary-600 hover:text-primary-800 text-sm font-medium"
                       >
                         Edit
-                      </button>
+                      </Button>
                     )}
                   </td>
                 </tr>
@@ -432,41 +394,44 @@ export function ItemTable({
 
       {/* Pagination */}
       {pagination.totalPages > 1 && (
-        <div className="px-4 py-3 border-t border-gray-200 flex flex-wrap items-center justify-between gap-4">
-          <div className="text-sm text-gray-600">
+        <div className="px-4 py-3 border-t border-surface-divider flex flex-wrap items-center justify-between gap-4">
+          <div className="text-sm text-text-secondary">
             Showing {pagination.page * pagination.limit - pagination.limit + 1}{" "}
             to {Math.min(pagination.page * pagination.limit, pagination.total)}{" "}
             of {pagination.total} items
           </div>
           <div className="flex items-center gap-4">
-            <select
-              value={pagination.limit}
+            <Select
+              value={String(pagination.limit)}
               onChange={(e) => handleLimitChange(Number(e.target.value))}
-              className="text-sm border border-gray-300 rounded px-2 py-1 focus:outline-none focus:ring-1 focus:ring-primary-500"
-            >
-              <option value={10}>10 per page</option>
-              <option value={20}>20 per page</option>
-              <option value={50}>50 per page</option>
-              <option value={100}>100 per page</option>
-            </select>
+              options={[
+                { value: "10", label: "10 per page" },
+                { value: "20", label: "20 per page" },
+                { value: "50", label: "50 per page" },
+                { value: "100", label: "100 per page" },
+              ]}
+              className="w-auto"
+            />
             <div className="flex gap-2">
-              <button
+              <Button
+                size="sm"
+                variant="outline"
                 onClick={() => handlePageChange(pagination.page - 1)}
                 disabled={!pagination.hasPrev}
-                className="px-3 py-1 text-sm border border-gray-300 rounded hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 Previous
-              </button>
-              <span className="text-sm text-gray-600">
+              </Button>
+              <span className="text-sm text-text-secondary self-center">
                 Page {pagination.page} of {pagination.totalPages}
               </span>
-              <button
+              <Button
+                size="sm"
+                variant="outline"
                 onClick={() => handlePageChange(pagination.page + 1)}
                 disabled={!pagination.hasNext}
-                className="px-3 py-1 text-sm border border-gray-300 rounded hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 Next
-              </button>
+              </Button>
             </div>
           </div>
         </div>

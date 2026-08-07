@@ -1,3 +1,4 @@
+import { Card, CardContent } from "./primitives";
 import { formatCurrency, formatPercent } from "@/utils/designTokens";
 
 interface StatCardProps {
@@ -14,10 +15,14 @@ export function StatCard({
   const displayValue = formatter ? formatter(value as number) : String(value);
 
   return (
-    <div className="bg-white rounded-lg border border-gray-200 p-6">
-      <p className="text-sm font-medium text-gray-500">{title}</p>
-      <p className="mt-2 text-3xl font-bold text-gray-900">{displayValue}</p>
-    </div>
+    <Card variant="default" padding="md">
+      <CardContent className="pt-0">
+        <p className="text-sm font-medium text-text-secondary">{title}</p>
+        <p className="mt-1 text-3xl font-bold text-text-primary">
+          {displayValue}
+        </p>
+      </CardContent>
+    </Card>
   );
 }
 
@@ -34,26 +39,32 @@ export function PhaseSummaryCard({
   phase,
 }: PhaseSummaryCardProps): JSX.Element {
   return (
-    <div className="bg-white rounded-lg border border-gray-200 p-6">
-      <h3 className="text-lg font-semibold text-gray-900">{phase.name}</h3>
-      <div className="mt-4 space-y-3">
-        <div className="flex justify-between text-sm">
-          <span className="text-gray-600">Sanctioned Value</span>
-          <span className="font-medium text-gray-900">
-            {formatCurrency(phase.totalValue)}
-          </span>
+    <Card variant="default" padding="md">
+      <CardContent className="pt-0">
+        <h3 className="text-lg font-semibold text-text-primary">
+          {phase.name}
+        </h3>
+        <div className="mt-4 space-y-3">
+          <div className="flex justify-between text-sm">
+            <span className="text-text-secondary">Sanctioned Value</span>
+            <span className="font-medium text-text-primary">
+              {formatCurrency(phase.totalValue)}
+            </span>
+          </div>
+          <div className="flex justify-between text-sm">
+            <span className="text-text-secondary">Progress</span>
+            <span className="font-medium text-primary-600">
+              {formatPercent(phase.progressPercent)}
+            </span>
+          </div>
+          <div className="flex justify-between text-sm">
+            <span className="text-text-secondary">Items</span>
+            <span className="font-medium text-text-primary">
+              {phase.itemCount}
+            </span>
+          </div>
         </div>
-        <div className="flex justify-between text-sm">
-          <span className="text-gray-600">Progress</span>
-          <span className="font-medium text-primary-600">
-            {formatPercent(phase.progressPercent)}
-          </span>
-        </div>
-        <div className="flex justify-between text-sm">
-          <span className="text-gray-600">Items</span>
-          <span className="font-medium text-gray-900">{phase.itemCount}</span>
-        </div>
-      </div>
-    </div>
+      </CardContent>
+    </Card>
   );
 }
