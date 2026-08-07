@@ -28,29 +28,7 @@ export async function getDashboard(
   }
   const uniqueItems = Array.from(uniqueItemsMap.values());
 
-  // Calculate aggregates using unique items
-  const totalItems = uniqueItems.length;
-  const totalValue = uniqueItems.reduce(
-    (sum, item) => sum + (item.amount || 0),
-    0,
-  );
-  const completedValue = uniqueItems.reduce(
-    (sum, item) => sum + (item.valueCompleted || 0),
-    0,
-  );
-  const overallProgress =
-    totalValue > 0 ? Math.round((completedValue / totalValue) * 100) : 0;
-
-  // Status breakdown using unique items
-  const statusCounts = uniqueItems.reduce(
-    (acc, item) => {
-      acc[item.status] = (acc[item.status] || 0) + 1;
-      return acc;
-    },
-    {} as Record<string, number>,
-  );
-
-  // Phase breakdown - still show per-phase counts (including duplicates within phase)
+  // Phase breakdown - calculate first so we can use it for totalValue
   const phaseBreakdown = phases.map((phase) => {
     const phaseItems = items.filter((item) => item.phaseId.equals(phase._id));
     const phaseValue = phaseItems.reduce(
@@ -74,6 +52,28 @@ export async function getDashboard(
       progressPercent: phaseProgress,
     };
   });
+
+  // Calculate aggregates using unique items for item count, but sum of phase values for total value
+  const totalItems = uniqueItems.length;
+  const totalValue = phaseBreakdown.reduce(
+    (sum, phase) => sum + phase.totalValue,
+    0,
+  );
+  const completedValue = uniqueItems.reduce(
+    (sum, item) => sum + (item.valueCompleted || 0),
+    0,
+  );
+  const overallProgress =
+    totalValue > 0 ? Math.round((completedValue / totalValue) * 100) : 0;
+
+  // Status breakdown using unique items
+  const statusCounts = uniqueItems.reduce(
+    (acc, item) => {
+      acc[item.status] = (acc[item.status] || 0) + 1;
+      return acc;
+    },
+    {} as Record<string, number>,
+  );
 
   res.json(
     successResponse({
