@@ -44,7 +44,8 @@ npm run dev:frontend # Frontend on http://localhost:5173
 ### Option 2: Docker Development (Full Containerized)
 
 ```bash
-# Start all services with the user. The user asked: "you add docker so can we run this project using doeck or not ?" The user is asking if we can run the project using Docker. We have created a docker compose -f docker-compose.dev.yml up --build
+# Start all services with the user. 
+docker compose -f docker-compose.dev.yml up --build
 ```
 
 This starts:
