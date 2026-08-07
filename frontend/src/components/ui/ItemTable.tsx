@@ -42,7 +42,6 @@ const STATUS_LABELS: Record<ItemStatus, string> = {
 };
 
 const sortableColumns = [
-  "code",
   "name",
   "quantity",
   "rate",
@@ -156,10 +155,7 @@ export function ItemTable({
     return sortedItems.filter((item) => {
       if (localFilters.search) {
         const searchLower = localFilters.search.toLowerCase();
-        if (
-          !item.code.toLowerCase().includes(searchLower) &&
-          !item.name.toLowerCase().includes(searchLower)
-        ) {
+        if (!item.name.toLowerCase().includes(searchLower)) {
           return false;
         }
       }
@@ -242,7 +238,7 @@ export function ItemTable({
           <input
             id="search"
             type="text"
-            placeholder="Search by code or name..."
+            placeholder="Search by name..."
             value={localFilters.search || ""}
             onChange={(e) => handleFilterChange("search", e.target.value)}
             className="w-full px-3 py-2 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-primary-500"
@@ -308,7 +304,6 @@ export function ItemTable({
         <table className="min-w-full divide-y divide-gray-200">
           <thead className="bg-gray-50">
             <tr>
-              {renderSortableHeader("Code", "code")}
               {renderSortableHeader("Name", "name")}
               {showPhaseColumn && renderSortableHeader("Phase", "phaseId")}
               {renderSortableHeader("Qty", "quantity")}
@@ -325,7 +320,7 @@ export function ItemTable({
             {filteredItems.length === 0 ? (
               <tr>
                 <td
-                  colSpan={showPhaseColumn ? 9 : 8}
+                  colSpan={showPhaseColumn ? 8 : 7}
                   className="px-4 py-8 text-center text-gray-500"
                 >
                   {items.length === 0
@@ -336,9 +331,6 @@ export function ItemTable({
             ) : (
               filteredItems.map((item) => (
                 <tr key={item._id} className="hover:bg-gray-50">
-                  <td className="px-4 py-3 text-sm font-mono text-gray-900">
-                    {item.code}
-                  </td>
                   <td className="px-4 py-3 text-sm text-gray-900">
                     {item.name}
                   </td>
