@@ -6,8 +6,9 @@
 
 - Node.js 22+
 - MongoDB 7+ (local or Docker)
+- Docker & Docker Compose (for containerized setup)
 
-### Setup
+### Option 1: Local Development (Recommended for Development)
 
 1. **Clone and install dependencies**
 
@@ -40,6 +41,31 @@ npm run dev:backend  # Backend on http://localhost:5000
 npm run dev:frontend # Frontend on http://localhost:5173
 ```
 
+### Option 2: Docker Development (Full Containerized)
+
+```bash
+# Start all services with the user. The user asked: "you add docker so can we run this project using doeck or not ?" The user is asking if we can run the project using Docker. We have created a docker compose -f docker-compose.dev.yml up --build
+```
+
+This starts:
+- MongoDB on port 27017
+- Backend on port 5000 (with hot reload)
+- Frontend on port 5173 (with hot reload)
+
+### Option 3: Docker Production
+
+```bash
+# Build and start production containers
+docker compose up --build -d
+```
+
+This starts:
+- MongoDB on port 27017
+- Backend on port 5000
+- Frontend (nginx) on port 80
+
+Access the app at **http://localhost**
+
 ### Available Commands
 
 | Command | Description |
@@ -53,6 +79,16 @@ npm run dev:frontend # Frontend on http://localhost:5173
 | `npm run lint` | Lint both frontend and backend |
 | `npm run typecheck` | Type-check both frontend and backend |
 | `npm run db:import` | Import workbook data into MongoDB (backend only) |
+
+### Docker Commands
+
+| Command | Description |
+|---------|-------------|
+| `docker compose -f docker-compose.dev.yml up --build` | Start dev environment with hot reload |
+| `docker compose -f docker-compose.dev.yml down` | Stop dev environment |
+| `docker compose up --build -d` | Start production environment |
+| `docker compose down` | Stop production environment |
+| `docker compose logs -f` | View logs |
 
 ## Project Structure
 
@@ -75,7 +111,9 @@ sainik-tracker-copilot-kit/
 │   │   └── server.ts       # Entry point
 │   ├── package.json
 │   ├── tsconfig.json
-│   └── .env.example
+│   ├── .env.example
+│   ├── Dockerfile
+│   └── Dockerfile.dev
 ├── frontend/
 │   ├── src/
 │   │   ├── api/            # Axios client and API functions
@@ -95,12 +133,18 @@ sainik-tracker-copilot-kit/
 │   ├── package.json
 │   ├── tsconfig.json
 │   ├── vite.config.ts
-│   └── tailwind.config.js
+│   ├── tailwind.config.js
+│   ├── Dockerfile
+│   ├── Dockerfile.dev
+│   └── nginx.conf
 ├── source-data/
 │   └── Sainik Phase wise Sheets.xls
 ├── docs/
 │   ├── MVP_SCOPE.md
-│   └── IMPLEMENTATION_PLAN.md
+│   ├── IMPLEMENTATION_PLAN.md
+│   └── KNOWN_LIMITATIONS.md
+├── docker-compose.yml
+├── docker-compose.dev.yml
 ├── package.json
 └── README.md
 ```
