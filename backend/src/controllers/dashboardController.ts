@@ -20,7 +20,7 @@ export async function getDashboard(
   const items = await Item.find({ phaseId: { $in: phaseIds } }).lean();
 
   // Deduplicate items by code to get unique items count
-  const uniqueItemsMap = new Map<string, typeof items[0]>();
+  const uniqueItemsMap = new Map<string, (typeof items)[0]>();
   for (const item of items) {
     if (!uniqueItemsMap.has(item.code)) {
       uniqueItemsMap.set(item.code, item);
@@ -30,7 +30,10 @@ export async function getDashboard(
 
   // Calculate aggregates using unique items
   const totalItems = uniqueItems.length;
-  const totalValue = uniqueItems.reduce((sum, item) => sum + (item.amount || 0), 0);
+  const totalValue = uniqueItems.reduce(
+    (sum, item) => sum + (item.amount || 0),
+    0,
+  );
   const completedValue = uniqueItems.reduce(
     (sum, item) => sum + (item.valueCompleted || 0),
     0,

@@ -75,7 +75,10 @@ export function DashboardPage(): JSX.Element {
           value={dashboard?.summary?.overallProgress || 0}
           formatter={formatPercent}
         />
-        <StatCard title="Total Items" value={dashboard?.summary?.totalItems || 0} />
+        <StatCard
+          title="Total Items"
+          value={dashboard?.summary?.totalItems || 0}
+        />
         <StatCard
           title="On Hold Items"
           value={dashboard?.summary?.statusCounts?.ON_HOLD || 0}
