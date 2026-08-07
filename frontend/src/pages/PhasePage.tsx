@@ -75,6 +75,8 @@ export function PhasePage(): JSX.Element {
             onFiltersChange={handleFiltersChange}
             initialFilters={filters}
             showPhaseColumn={false}
+            isLoading={itemsLoading}
+            error={null}
           />
         )}
       </div>

@@ -21,6 +21,8 @@ interface ItemTableProps {
   initialFilters?: ItemFilters;
   showPhaseColumn?: boolean;
   phases?: PhaseOption[];
+  isLoading?: boolean;
+  error?: Error | null;
 }
 
 const STATUS_COLORS: Record<ItemStatus, string> = {
@@ -56,6 +58,8 @@ export function ItemTable({
   initialFilters = {},
   showPhaseColumn = false,
   phases = [],
+  isLoading = false,
+  error = null,
 }: ItemTableProps): JSX.Element {
   const updateProgress = useUpdateItemProgress();
   const [editingId, setEditingId] = useState<string | null>(null);
@@ -89,7 +93,7 @@ export function ItemTable({
       },
       {
         onSuccess: () => setEditingId(null),
-        onError: (error) => alert(`Failed to update: ${error.message}`),
+        onError: (err) => alert(`Failed to update: ${err.message}`),
       },
     );
   };
@@ -173,6 +177,30 @@ export function ItemTable({
     localFilters.status,
     localFilters.phaseId,
   ]);
+
+  // Loading state
+  if (isLoading) {
+    return (
+      <div className="bg-white rounded-lg border border-gray-200">
+        <div className="p-8 text-center text-gray-600">
+          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary-600 mx-auto mb-4"></div>
+          Loading items...
+        </div>
+      </div>
+    );
+  }
+
+  // Error state
+  if (error) {
+    return (
+      <div className="bg-white rounded-lg border border-gray-200">
+        <div className="p-8 text-center text-red-600">
+          <p className="font-medium">Failed to load items</p>
+          <p className="text-sm mt-1">{error.message}</p>
+        </div>
+      </div>
+    );
+  }
 
   const renderSortableHeader = (label: string, key: string) => (
     <th
@@ -300,7 +328,9 @@ export function ItemTable({
                   colSpan={showPhaseColumn ? 9 : 8}
                   className="px-4 py-8 text-center text-gray-500"
                 >
-                  No items found matching your filters
+                  {items.length === 0
+                    ? "No items available"
+                    : "No items found matching your filters"}
                 </td>
               </tr>
             ) : (

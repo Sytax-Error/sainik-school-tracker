@@ -59,12 +59,12 @@ Copilot must update this checklist after each completed phase.
 
 ## Phase 5 — MVP hardening
 
-- [ ] Add clear README setup steps.
-- [ ] Add `.env.example` files.
-- [ ] Add MongoDB Docker Compose option.
-- [ ] Add loading, empty and error states.
-- [ ] Verify Indian currency formatting.
-- [ ] Verify value-weighted progress calculations.
-- [ ] Verify workbook remains unmodified.
-- [ ] Run complete local setup from a clean state.
-- [ ] Record known limitations and next-phase ideas.
+- [x] Add clear README setup steps.
+- [x] Add `.env.example` files.
+- [x] Add MongoDB Docker Compose option.
+- [x] Add loading, empty and error states.
+- [x] Verify Indian currency formatting.
+- [x] Verify value-weighted progress calculations.
+- [x] Verify workbook remains unmodified.
+- [x] Run complete local setup from a clean state.
+- [x] Record known limitations and next-phase ideas.

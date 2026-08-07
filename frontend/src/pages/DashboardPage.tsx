@@ -128,6 +128,8 @@ export function DashboardPage(): JSX.Element {
               phases?.map((p) => ({ id: p._id, name: p.name, code: p.code })) ||
               []
             }
+            isLoading={itemsLoading}
+            error={null}
           />
         )}
       </div>
