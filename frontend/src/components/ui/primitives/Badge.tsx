@@ -16,7 +16,7 @@ const variantStyles = {
   neutral: {
     bg: "bg-surface-tertiary",
     text: "text-text-secondary",
-    dot: "bg-gray-400",
+    dot: "bg-text-tertiary",
     border: "border-surface-border",
   },
   info: {

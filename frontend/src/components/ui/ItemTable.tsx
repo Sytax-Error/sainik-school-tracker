@@ -369,7 +369,7 @@ export function ItemTable({
       <div className="overflow-x-auto">
         <table className="table">
           <thead>
-            <tr>
+            <tr className="bg-surface-secondary border-b border-surface-divider">
               {renderSortableHeader("Name", "name")}
               {showPhaseColumn && renderSortableHeader("Phase", "phaseId")}
               {renderSortableHeader("Qty", "quantity")}
@@ -382,7 +382,7 @@ export function ItemTable({
               </th>
             </tr>
           </thead>
-          <tbody>
+          <tbody className="divide-y divide-surface-divider">
             {filteredItems.length === 0 ? (
               <tr>
                 <td
@@ -435,8 +435,11 @@ export function ItemTable({
               </tr>
             ) : (
               filteredItems.map((item) => (
-                <tr key={item._id}>
-                  <td className="px-4 py-3 text-sm text-text-primary">
+                <tr
+                  key={item._id}
+                  className="hover:bg-surface-secondary transition-colors duration-150"
+                >
+                  <td className="px-4 py-3 text-sm text-text-primary font-medium">
                     {item.name}
                   </td>
                   {showPhaseColumn && (
@@ -444,13 +447,13 @@ export function ItemTable({
                       {getPhaseName(item.phaseId)}
                     </td>
                   )}
-                  <td className="px-4 py-3 text-sm text-text-primary">
+                  <td className="px-4 py-3 text-sm text-text-primary tabular-nums">
                     {item.quantity}
                   </td>
-                  <td className="px-4 py-3 text-sm text-text-primary">
+                  <td className="px-4 py-3 text-sm text-text-primary tabular-nums">
                     {formatCurrency(item.rate)}
                   </td>
-                  <td className="px-4 py-3 text-sm font-medium text-text-primary">
+                  <td className="px-4 py-3 text-sm font-medium text-text-primary tabular-nums">
                     {formatCurrency(item.amount)}
                   </td>
                   <td className="px-4 py-3 text-sm">
@@ -482,7 +485,17 @@ export function ItemTable({
                     ) : (
                       <TableProgressBar
                         value={item.progressPercent}
-                        variant="default"
+                        variant={
+                          item.status === "COMPLETED"
+                            ? "success"
+                            : item.status === "IN_PROGRESS"
+                              ? "info"
+                              : item.status === "ON_HOLD"
+                                ? "warning"
+                                : item.status === "CANCELLED"
+                                  ? "danger"
+                                  : "default"
+                        }
                       />
                     )}
                   </td>
@@ -524,7 +537,7 @@ export function ItemTable({
 
       {/* Pagination */}
       {pagination.totalPages > 1 && (
-        <div className="px-4 py-3 border-t border-surface-divider flex flex-wrap items-center justify-between gap-4">
+        <div className="px-4 py-3 border-t border-surface-divider flex flex-wrap items-center justify-between gap-4 bg-surface-secondary">
           <div className="text-sm text-text-secondary">
             Showing {pagination.page * pagination.limit - pagination.limit + 1}{" "}
             to {Math.min(pagination.page * pagination.limit, pagination.total)}{" "}

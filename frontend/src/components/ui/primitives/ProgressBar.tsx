@@ -7,6 +7,7 @@ export interface ProgressBarProps extends HTMLAttributes<HTMLDivElement> {
   showLabel?: boolean;
   label?: string;
   variant?: "default" | "success" | "warning" | "danger" | "info";
+  size?: "sm" | "md" | "lg";
 }
 
 const variantStyles = {
@@ -17,6 +18,12 @@ const variantStyles = {
   info: "bg-semantic-info-main",
 };
 
+const trackStyles = {
+  sm: "h-1.5",
+  md: "h-2",
+  lg: "h-3",
+};
+
 export const ProgressBar = forwardRef<HTMLDivElement, ProgressBarProps>(
   (
     {
@@ -25,6 +32,7 @@ export const ProgressBar = forwardRef<HTMLDivElement, ProgressBarProps>(
       showLabel = false,
       label,
       variant = "default",
+      size = "md",
       className = "",
       ...props
     },
@@ -35,8 +43,10 @@ export const ProgressBar = forwardRef<HTMLDivElement, ProgressBarProps>(
     return (
       <div ref={ref} className={cn("w-full", className)} {...props}>
         <div
-          className="w-full bg-surface-tertiary rounded-full overflow-hidden"
-          style={{ height: "var(--progress-height)" }}
+          className={cn(
+            "w-full bg-surface-tertiary rounded-full overflow-hidden",
+            trackStyles[size],
+          )}
         >
           <div
             className={cn(

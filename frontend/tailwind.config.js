@@ -1,3 +1,20 @@
+/**
+ * Tailwind Configuration - Mirrors designTokens.ts
+ *
+ * Related Documentation:
+ * - UI_DESIGN_SYSTEM.md: Complete design system specifications
+ * - UI_IMPROVEMENT_PLAN.md: Strategic improvement plan
+ * - UI_COLOR_QUICK_REF.md: Quick reference for daily development
+ * - src/utils/designTokens.ts: Single source of truth for tokens
+ * - src/styles/index.css: Global base styles
+ * - src/components/ui/primitives/: Reusable UI components
+ *
+ * When modifying colors/spacing/typography:
+ * 1. Update src/utils/designTokens.ts first
+ * 2. Update this file to match
+ * 3. Update UI_DESIGN_SYSTEM.md documentation
+ */
+
 /** @type {import('tailwindcss').Config} */
 export default {
   content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],

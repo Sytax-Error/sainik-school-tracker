@@ -8,6 +8,18 @@ applyTo: "frontend/**/*.{ts,tsx,css}"
 
 Apply the repository-wide instructions in `../copilot-instructions.md`.
 
+## 📚 Design System Reference
+
+**Required reading for all UI work:**
+
+| Document                  | Location                       | Purpose                               |
+| ------------------------- | ------------------------------ | ------------------------------------- |
+| **UI_DESIGN_SYSTEM.md**   | `../../UI_DESIGN_SYSTEM.md`    | Complete design system specifications |
+| **UI_COLOR_QUICK_REF.md** | `../../UI_COLOR_QUICK_REF.md`  | Quick Tailwind class reference        |
+| **designTokens.ts**       | `../src/utils/designTokens.ts` | Single source of truth for tokens     |
+
+**Rule**: Never hardcode colors. Use design tokens via Tailwind classes or component variants.
+
 ## Architecture
 
 Use this feature-oriented structure:

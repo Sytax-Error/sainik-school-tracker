@@ -210,7 +210,7 @@ function ToastItem({ toast, onRemove }: ToastItemProps): JSX.Element {
           setIsExiting(true);
           setTimeout(() => onRemove(toast.id), 200);
         }}
-        className="flex-shrink-0 p-1 rounded hover:bg-black/10 transition-colors"
+        className="flex-shrink-0 p-1 rounded hover:bg-surface-tertiary transition-colors"
         aria-label="Dismiss notification"
       >
         <X className="w-4 h-4" aria-hidden="true" />

@@ -18,6 +18,23 @@ This work must improve the frontend experience without changing existing applica
 
 ---
 
+## 📚 Related Documentation
+
+This plan works in conjunction with the following design system documents:
+
+| Document | Purpose | Location |
+|----------|---------|----------|
+| **UI_DESIGN_SYSTEM.md** | Complete design system: color tokens, component guidelines, accessibility rules, implementation patterns | `./UI_DESIGN_SYSTEM.md` |
+| **UI_COLOR_QUICK_REF.md** | Quick reference card for daily development: common Tailwind classes, patterns, anti-patterns | `./UI_COLOR_QUICK_REF.md` |
+| **frontend/src/utils/designTokens.ts** | Source of truth for color tokens, spacing, typography, status mapping | `./frontend/src/utils/designTokens.ts` |
+| **frontend/tailwind.config.js** | Tailwind theme configuration mapping tokens to utility classes | `./frontend/tailwind.config.js` |
+| **frontend/src/styles/index.css** | Global base styles, CSS custom properties, component utilities | `./frontend/src/styles/index.css` |
+| **frontend/src/components/ui/primitives/** | Reusable UI components (Button, Card, Badge, ProgressBar, etc.) | `./frontend/src/components/ui/primitives/` |
+
+**Usage**: When implementing improvements, reference `UI_DESIGN_SYSTEM.md` for detailed specifications and `UI_COLOR_QUICK_REF.md` for quick class lookups. The design tokens in `designTokens.ts` are the single source of truth — Tailwind config and components derive from them.
+
+---
+
 # Scope Guard
 
 This document is strictly for frontend UI/UX improvement.

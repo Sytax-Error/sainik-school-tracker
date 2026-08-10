@@ -1,3 +1,15 @@
+/**
+ * Global Styles - Base layer, utilities, component styles
+ * 
+ * Related Documentation:
+ * - UI_DESIGN_SYSTEM.md: Complete design system specifications
+ * - UI_IMPROVEMENT_PLAN.md: Strategic improvement plan
+ * - UI_COLOR_QUICK_REF.md: Quick reference for daily development
+ * - src/utils/designTokens.ts: Single source of truth for tokens
+ * - tailwind.config.js: Tailwind theme configuration
+ * - src/components/ui/primitives/: Reusable UI components
+ */
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;

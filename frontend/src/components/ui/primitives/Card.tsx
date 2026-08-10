@@ -33,7 +33,7 @@ export const Card = forwardRef<HTMLDivElement, CardProps>(
     };
 
     const hoverStyles = hover
-      ? "transition-shadow duration-200 hover:shadow-cardHover"
+      ? "transition-all duration-200 hover:shadow-cardHover hover:-translate-y-0.5"
       : "";
 
     return (

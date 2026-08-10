@@ -23,14 +23,14 @@ export function MainLayout({ children }: MainLayoutProps): JSX.Element {
                 Sainik School Tracker
               </Link>
             </div>
-            <nav className="flex items-center space-x-2">
+            <nav className="flex items-center space-x-1">
               {navItems.map((item) => (
                 <Link
                   key={item.path}
                   to={item.path}
-                  className={`px-3 py-2 rounded-md text-sm font-medium transition-colors ${
+                  className={`px-3 py-2 rounded-md text-sm font-medium transition-all duration-150 ${
                     location.pathname === item.path
-                      ? "bg-primary-50 text-primary-700"
+                      ? "bg-primary-100 text-primary-700"
                       : "text-text-secondary hover:text-text-primary hover:bg-surface-secondary"
                   }`}
                 >

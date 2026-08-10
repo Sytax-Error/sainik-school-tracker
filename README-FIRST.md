@@ -13,11 +13,27 @@
 
 docs/
 ├── MVP_SCOPE.md
-└── IMPLEMENTATION_PLAN.md
+├── IMPLEMENTATION_PLAN.md
+├── KNOWN_LIMITATIONS.md
+├── UI_DESIGN_SYSTEM.md          # Complete design system (colors, components, accessibility)
+├── UI_IMPROVEMENT_PLAN.md       # Strategic UI improvement plan (6 focus areas)
+└── UI_COLOR_QUICK_REF.md        # Quick reference card for daily development
 
 source-data/
 └── Sainik Phase wise Sheets.xls
 ```
+
+## Design System Documentation
+
+| Document | Purpose | When to Use |
+|----------|---------|-------------|
+| **UI_DESIGN_SYSTEM.md** | Complete design system: color tokens, component guidelines, accessibility rules, implementation patterns | Detailed specifications, new component design, accessibility review |
+| **UI_IMPROVEMENT_PLAN.md** | Strategic plan: 6 improvement areas, scope guard, design direction | Planning work, understanding priorities, scope boundaries |
+| **UI_COLOR_QUICK_REF.md** | Quick reference: Tailwind classes, patterns, anti-patterns | Daily development, quick class lookups, code reviews |
+| **frontend/src/utils/designTokens.ts** | Source of truth for all design tokens | Adding new tokens, verifying values, cross-referencing |
+| **frontend/tailwind.config.js** | Tailwind theme configuration | Adding new utilities, extending theme |
+
+**Rule**: `designTokens.ts` is the single source of truth. Tailwind config and documentation must mirror it.
 
 ## How to use
 

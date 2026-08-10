@@ -55,7 +55,7 @@ export function DashboardPage(): JSX.Element {
   const phase2 = phases?.find((p) => p.code === "PHASE_2");
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-8">
       <PageHeader
         title="Dashboard"
         description="Overview of project progress and key metrics"

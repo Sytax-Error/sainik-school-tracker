@@ -1,3 +1,17 @@
+/**
+ * UI Primitives - Reusable Design System Components
+ *
+ * Related Documentation:
+ * - UI_DESIGN_SYSTEM.md: Complete design system specifications
+ * - UI_IMPROVEMENT_PLAN.md: Strategic improvement plan
+ * - UI_COLOR_QUICK_REF.md: Quick reference for daily development
+ * - src/utils/designTokens.ts: Single source of truth for tokens
+ * - tailwind.config.js: Tailwind theme configuration
+ *
+ * All components use design tokens via Tailwind classes.
+ * Do not hardcode colors - use the variant/size props.
+ */
+
 export { Button, type ButtonProps } from "./Button";
 export { Input, type InputProps } from "./Input";
 export { Select, type SelectProps, type SelectOption } from "./Select";

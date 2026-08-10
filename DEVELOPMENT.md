@@ -1,5 +1,19 @@
 # Sainik School Project Tracker — Development Guide
 
+## 📚 Design System Documentation
+
+**All UI work must follow the design system:**
+
+| Document | Location | Purpose |
+|----------|----------|---------|
+| **UI_DESIGN_SYSTEM.md** | `./UI_DESIGN_SYSTEM.md` | Complete design system (colors, components, accessibility) |
+| **UI_IMPROVEMENT_PLAN.md** | `./UI_IMPROVEMENT_PLAN.md` | Strategic improvement plan (6 focus areas, scope guard) |
+| **UI_COLOR_QUICK_REF.md** | `./UI_COLOR_QUICK_REF.md` | Quick reference for Tailwind classes & patterns |
+| **designTokens.ts** | `frontend/src/utils/designTokens.ts` | **Single source of truth** for all tokens |
+| **tailwind.config.js** | `frontend/tailwind.config.js` | Tailwind theme (mirrors designTokens.ts) |
+
+**Golden Rule**: `designTokens.ts` is the single source of truth. Never hardcode colors — use Tailwind classes mapped to tokens or component variants.
+
 ## Quick Start
 
 ### Prerequisites

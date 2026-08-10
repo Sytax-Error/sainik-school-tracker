@@ -1,3 +1,22 @@
+/**
+ * Design Tokens - Single Source of Truth for UI Design System
+ *
+ * Related Documentation:
+ * - UI_DESIGN_SYSTEM.md: Complete design system specifications
+ * - UI_IMPROVEMENT_PLAN.md: Strategic improvement plan (6 focus areas)
+ * - UI_COLOR_QUICK_REF.md: Quick reference for daily development
+ * - tailwind.config.js: Tailwind theme configuration (mirrors these tokens)
+ * - src/styles/index.css: Global base styles
+ * - src/components/ui/primitives/: Reusable UI components
+ *
+ * When modifying tokens:
+ * 1. Update this file first
+ * 2. Update tailwind.config.js to match
+ * 3. Update UI_DESIGN_SYSTEM.md documentation
+ * 4. Verify contrast ratios (WCAG AA)
+ * 5. Test in all components
+ */
+
 export const colors = {
   primary: {
     50: "#eef4fa",
