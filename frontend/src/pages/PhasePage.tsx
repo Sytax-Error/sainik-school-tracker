@@ -2,7 +2,7 @@ import { useParams } from "react-router-dom";
 import { usePhase, usePhases, useItems } from "@/api/hooks";
 import { ItemTable } from "@/components/ui/ItemTable";
 import { PageHeader } from "@/components/ui/primitives";
-import { useCallback, useMemo, useState } from "react";
+import { useCallback, useMemo, useState, useEffect } from "react";
 import type { ItemFilters } from "@/api/types";
 
 export function PhasePage(): JSX.Element {
@@ -23,7 +23,7 @@ export function PhasePage(): JSX.Element {
 
   // Use state for filters so they can be updated by ItemTable
   const [filters, setFilters] = useState<ItemFilters>({
-    phaseId: actualPhaseId,
+    phaseId: actualPhaseId || undefined,
     search: "",
     status: undefined,
     page: 1,
@@ -39,6 +39,18 @@ export function PhasePage(): JSX.Element {
     },
     [],
   );
+
+  // Update phaseId in filters when actualPhaseId changes (e.g., after phases load)
+  useEffect(() => {
+    if (actualPhaseId) {
+      setFilters((prev) => ({ ...prev, phaseId: actualPhaseId, page: 1 }));
+    }
+  }, [actualPhaseId]);
+
+  // Also reset page when URL phaseId changes (for client-side navigation)
+  useEffect(() => {
+    setFilters((prev) => ({ ...prev, page: 1 }));
+  }, [phaseId]);
 
   const { data: itemsData, isLoading: itemsLoading } = useItems(filters);
 

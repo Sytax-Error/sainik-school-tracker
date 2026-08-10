@@ -1,4 +1,4 @@
-import { useState, useMemo, useCallback } from "react";
+import { useState, useMemo, useCallback, useEffect } from "react";
 import { useDebounce } from "@/hooks";
 import { useUpdateItemProgress } from "@/api/hooks";
 import type {
@@ -65,7 +65,7 @@ export function ItemTable({
   const [localFilters, setLocalFilters] = useState<ItemFilters>({
     search: "",
     status: undefined,
-    phaseId: undefined,
+    phaseId: initialFilters.phaseId,
     sortBy: initialFilters.sortBy || "name",
     sortOrder: initialFilters.sortOrder || "asc",
   });
@@ -73,6 +73,18 @@ export function ItemTable({
   const debouncedSearch = useDebounce(searchInput, 300);
 
   const { success, error: showError } = useToastHelpers();
+
+  // Sync localFilters with initialFilters when they change (e.g., page reset from parent)
+  useEffect(() => {
+    setLocalFilters((prev) => ({
+      ...prev,
+      phaseId: initialFilters.phaseId ?? prev.phaseId,
+      page: initialFilters.page ?? prev.page,
+      limit: initialFilters.limit ?? prev.limit,
+      sortBy: initialFilters.sortBy ?? prev.sortBy,
+      sortOrder: initialFilters.sortOrder ?? prev.sortOrder,
+    }));
+  }, [initialFilters]);
 
   // Use debounced search for filtering, but keep localFilters for other filters
   const effectiveSearch = debouncedSearch;
