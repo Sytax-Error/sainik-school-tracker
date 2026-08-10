@@ -23,9 +23,12 @@ const animationStyles = {
 
 const accentStyles = {
   primary: "bg-gradient-to-r from-primary-100 to-primary-200",
-  success: "bg-gradient-to-r from-semantic-success-light to-semantic-success-main/20",
-  warning: "bg-gradient-to-r from-semantic-warning-light to-semantic-warning-main/20",
-  danger: "bg-gradient-to-r from-semantic-danger-light to-semantic-danger-main/20",
+  success:
+    "bg-gradient-to-r from-semantic-success-light to-semantic-success-main/20",
+  warning:
+    "bg-gradient-to-r from-semantic-warning-light to-semantic-warning-main/20",
+  danger:
+    "bg-gradient-to-r from-semantic-danger-light to-semantic-danger-main/20",
   info: "bg-gradient-to-r from-semantic-info-light to-semantic-info-main/20",
 };
 
@@ -67,8 +70,19 @@ Skeleton.displayName = "Skeleton";
 export function StatCardSkeleton(): JSX.Element {
   return (
     <div className="bg-surface-primary border border-surface-border rounded-lg p-6 animate-pulse">
-      <Skeleton variant="text" width="60%" height="14px" accentColor="primary" />
-      <Skeleton variant="text" width="40%" height="32px" className="mt-2" accentColor="info" />
+      <Skeleton
+        variant="text"
+        width="60%"
+        height="14px"
+        accentColor="primary"
+      />
+      <Skeleton
+        variant="text"
+        width="40%"
+        height="32px"
+        className="mt-2"
+        accentColor="info"
+      />
     </div>
   );
 }
@@ -77,19 +91,54 @@ export function StatCardSkeleton(): JSX.Element {
 export function PhaseCardSkeleton(): JSX.Element {
   return (
     <div className="bg-surface-primary border border-surface-border rounded-lg p-6 animate-pulse">
-      <Skeleton variant="text" width="50%" height="20px" accentColor="primary" />
+      <Skeleton
+        variant="text"
+        width="50%"
+        height="20px"
+        accentColor="primary"
+      />
       <div className="mt-4 space-y-3">
         <div className="flex justify-between">
-          <Skeleton variant="text" width="40%" height="14px" accentColor="success" />
-          <Skeleton variant="text" width="30%" height="14px" accentColor="success" />
+          <Skeleton
+            variant="text"
+            width="40%"
+            height="14px"
+            accentColor="success"
+          />
+          <Skeleton
+            variant="text"
+            width="30%"
+            height="14px"
+            accentColor="success"
+          />
         </div>
         <div className="flex justify-between">
-          <Skeleton variant="text" width="40%" height="14px" accentColor="warning" />
-          <Skeleton variant="text" width="30%" height="14px" accentColor="warning" />
+          <Skeleton
+            variant="text"
+            width="40%"
+            height="14px"
+            accentColor="warning"
+          />
+          <Skeleton
+            variant="text"
+            width="30%"
+            height="14px"
+            accentColor="warning"
+          />
         </div>
         <div className="flex justify-between">
-          <Skeleton variant="text" width="40%" height="14px" accentColor="danger" />
-          <Skeleton variant="text" width="30%" height="14px" accentColor="danger" />
+          <Skeleton
+            variant="text"
+            width="40%"
+            height="14px"
+            accentColor="danger"
+          />
+          <Skeleton
+            variant="text"
+            width="30%"
+            height="14px"
+            accentColor="danger"
+          />
         </div>
       </div>
     </div>
@@ -136,7 +185,12 @@ export function TableSkeleton({
                 key={i}
                 className="px-4 py-3 text-left text-xs font-medium text-text-secondary uppercase tracking-wider"
               >
-                <Skeleton variant="text" width="60%" height="12px" accentColor="primary" />
+                <Skeleton
+                  variant="text"
+                  width="60%"
+                  height="12px"
+                  accentColor="primary"
+                />
               </th>
             ))}
           </tr>
@@ -156,16 +210,49 @@ export function FilterBarSkeleton(): JSX.Element {
   return (
     <div className="p-4 border-b border-surface-divider bg-surface-secondary flex flex-wrap gap-4 items-end animate-pulse">
       <div className="flex-1 min-w-[200px]">
-        <Skeleton variant="text" width="30%" height="14px" className="mb-1.5" accentColor="primary" />
-        <Skeleton variant="rectangular" width="100%" height="40px" accentColor="info" />
+        <Skeleton
+          variant="text"
+          width="30%"
+          height="14px"
+          className="mb-1.5"
+          accentColor="primary"
+        />
+        <Skeleton
+          variant="rectangular"
+          width="100%"
+          height="40px"
+          accentColor="info"
+        />
       </div>
       <div className="min-w-[150px]">
-        <Skeleton variant="text" width="30%" height="14px" className="mb-1.5" accentColor="primary" />
-        <Skeleton variant="rectangular" width="100%" height="40px" accentColor="success" />
+        <Skeleton
+          variant="text"
+          width="30%"
+          height="14px"
+          className="mb-1.5"
+          accentColor="primary"
+        />
+        <Skeleton
+          variant="rectangular"
+          width="100%"
+          height="40px"
+          accentColor="success"
+        />
       </div>
       <div className="min-w-[150px]">
-        <Skeleton variant="text" width="30%" height="14px" className="mb-1.5" accentColor="primary" />
-        <Skeleton variant="rectangular" width="100%" height="40px" accentColor="warning" />
+        <Skeleton
+          variant="text"
+          width="30%"
+          height="14px"
+          className="mb-1.5"
+          accentColor="primary"
+        />
+        <Skeleton
+          variant="rectangular"
+          width="100%"
+          height="40px"
+          accentColor="warning"
+        />
       </div>
     </div>
   );
@@ -175,9 +262,19 @@ export function FilterBarSkeleton(): JSX.Element {
 export function PageHeaderSkeleton(): JSX.Element {
   return (
     <div className="space-y-2 animate-pulse">
-      <Skeleton variant="text" width="20%" height="14px" accentColor="primary" />
+      <Skeleton
+        variant="text"
+        width="20%"
+        height="14px"
+        accentColor="primary"
+      />
       <Skeleton variant="text" width="40%" height="28px" accentColor="info" />
-      <Skeleton variant="text" width="60%" height="16px" accentColor="success" />
+      <Skeleton
+        variant="text"
+        width="60%"
+        height="16px"
+        accentColor="success"
+      />
     </div>
   );
 }

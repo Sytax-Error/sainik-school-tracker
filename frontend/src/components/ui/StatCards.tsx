@@ -25,9 +25,12 @@ export function StatCard({
 
   const accentStyles = {
     primary: "bg-gradient-to-r from-primary-500 to-primary-600",
-    success: "bg-gradient-to-r from-semantic-success-main to-semantic-success-dark",
-    warning: "bg-gradient-to-r from-semantic-warning-main to-semantic-warning-dark",
-    danger: "bg-gradient-to-r from-semantic-danger-main to-semantic-danger-dark",
+    success:
+      "bg-gradient-to-r from-semantic-success-main to-semantic-success-dark",
+    warning:
+      "bg-gradient-to-r from-semantic-warning-main to-semantic-warning-dark",
+    danger:
+      "bg-gradient-to-r from-semantic-danger-main to-semantic-danger-dark",
     info: "bg-gradient-to-r from-semantic-info-main to-semantic-info-dark",
   };
 
@@ -40,13 +43,22 @@ export function StatCard({
   };
 
   return (
-    <Card variant="default" padding="md" hover className="relative overflow-hidden">
+    <Card
+      variant="default"
+      padding="md"
+      hover
+      className="relative overflow-hidden"
+    >
       {/* Accent bar at top */}
-      <div className={`absolute top-0 left-0 right-0 h-1 ${accentStyles[accentColor]}`} />
+      <div
+        className={`absolute top-0 left-0 right-0 h-1 ${accentStyles[accentColor]}`}
+      />
       <CardContent className="pt-0 relative">
         <div className="flex items-center justify-between">
           <p className="text-sm font-medium text-text-secondary">{title}</p>
-          <div className={`w-10 h-10 rounded-lg flex items-center justify-center ${accentBgStyles[accentColor]}`}>
+          <div
+            className={`w-10 h-10 rounded-lg flex items-center justify-center ${accentBgStyles[accentColor]}`}
+          >
             <div className="w-5 h-5 rounded-full bg-current opacity-20" />
           </div>
         </div>
@@ -110,8 +122,15 @@ export function PhaseSummaryCard({
   };
 
   return (
-    <Card variant="default" padding="md" hover className="relative overflow-hidden">
-      <div className={`absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-primary-500 to-primary-600`} />
+    <Card
+      variant="default"
+      padding="md"
+      hover
+      className="relative overflow-hidden"
+    >
+      <div
+        className={`absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-primary-500 to-primary-600`}
+      />
       <CardContent className="pt-0 relative">
         <h3 className="text-lg font-semibold text-text-primary">
           {phase.name}
@@ -126,7 +145,9 @@ export function PhaseSummaryCard({
           <div>
             <div className="flex justify-between text-sm mb-1.5">
               <span className="text-text-secondary">Progress</span>
-              <span className={`font-medium ${progressTextStyles[progressColor]}`}>
+              <span
+                className={`font-medium ${progressTextStyles[progressColor]}`}
+              >
                 {formatPercent(phase.progressPercent)}
               </span>
             </div>

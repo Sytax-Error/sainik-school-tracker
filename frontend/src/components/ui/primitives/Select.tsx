@@ -71,7 +71,10 @@ export const Select = forwardRef<HTMLSelectElement, SelectProps>(
               "pr-10", // Space for custom arrow
               error
                 ? "border-semantic-danger-main focus-visible:ring-semantic-danger-light"
-                : "border-surface-border " + accentBorderStyles[accentColor] + " " + accentFocusStyles[accentColor],
+                : "border-surface-border " +
+                    accentBorderStyles[accentColor] +
+                    " " +
+                    accentFocusStyles[accentColor],
               className,
             )}
             aria-invalid={error ? "true" : "false"}

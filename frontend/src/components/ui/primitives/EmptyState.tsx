@@ -18,14 +18,28 @@ export interface EmptyStateProps extends HTMLAttributes<HTMLDivElement> {
 
 const accentStyles = {
   primary: "text-primary-600 bg-primary-50 border-primary-200",
-  success: "text-semantic-success-main bg-semantic-success-light border-semantic-success-main/20",
-  warning: "text-semantic-warning-main bg-semantic-warning-light border-semantic-warning-main/20",
-  danger: "text-semantic-danger-main bg-semantic-danger-light border-semantic-danger-main/20",
+  success:
+    "text-semantic-success-main bg-semantic-success-light border-semantic-success-main/20",
+  warning:
+    "text-semantic-warning-main bg-semantic-warning-light border-semantic-warning-main/20",
+  danger:
+    "text-semantic-danger-main bg-semantic-danger-light border-semantic-danger-main/20",
   info: "text-semantic-info-main bg-semantic-info-light border-semantic-info-main/20",
 };
 
 export const EmptyState = forwardRef<HTMLDivElement, EmptyStateProps>(
-  ({ title, description, action, icon, accentColor = "primary", className = "", ...props }, ref) => {
+  (
+    {
+      title,
+      description,
+      action,
+      icon,
+      accentColor = "primary",
+      className = "",
+      ...props
+    },
+    ref,
+  ) => {
     return (
       <div
         ref={ref}

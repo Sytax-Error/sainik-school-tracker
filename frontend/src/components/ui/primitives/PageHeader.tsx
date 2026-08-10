@@ -19,21 +19,34 @@ export interface PageHeaderProps extends HTMLAttributes<HTMLDivElement> {
 
 export const PageHeader = forwardRef<HTMLDivElement, PageHeaderProps>(
   (
-    { breadcrumb, title, description, action, accentColor = "primary", className = "", ...props },
+    {
+      breadcrumb,
+      title,
+      description,
+      action,
+      accentColor = "primary",
+      className = "",
+      ...props
+    },
     ref,
   ) => {
     const accentStyles = {
       primary: "bg-gradient-to-r from-primary-500 to-primary-600",
-      success: "bg-gradient-to-r from-semantic-success-main to-semantic-success-dark",
-      warning: "bg-gradient-to-r from-semantic-warning-main to-semantic-warning-dark",
-      danger: "bg-gradient-to-r from-semantic-danger-main to-semantic-danger-dark",
+      success:
+        "bg-gradient-to-r from-semantic-success-main to-semantic-success-dark",
+      warning:
+        "bg-gradient-to-r from-semantic-warning-main to-semantic-warning-dark",
+      danger:
+        "bg-gradient-to-r from-semantic-danger-main to-semantic-danger-dark",
       info: "bg-gradient-to-r from-semantic-info-main to-semantic-info-dark",
     };
 
     return (
       <div ref={ref} className={cn("space-y-2 relative", className)} {...props}>
         {accentColor && (
-          <div className={`absolute -top-2 -left-2 -right-2 h-1 rounded-t-lg ${accentStyles[accentColor]} opacity-50`} />
+          <div
+            className={`absolute -top-2 -left-2 -right-2 h-1 rounded-t-lg ${accentStyles[accentColor]} opacity-50`}
+          />
         )}
         {breadcrumb && breadcrumb.length > 0 && (
           <nav

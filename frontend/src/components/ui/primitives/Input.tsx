@@ -25,7 +25,18 @@ const accentBorderStyles = {
 };
 
 export const Input = forwardRef<HTMLInputElement, InputProps>(
-  ({ label, error, helperText, accentColor = "primary", className = "", id, ...props }, ref) => {
+  (
+    {
+      label,
+      error,
+      helperText,
+      accentColor = "primary",
+      className = "",
+      id,
+      ...props
+    },
+    ref,
+  ) => {
     const inputId = id || label?.toLowerCase().replace(/\s+/g, "-");
 
     return (
@@ -49,7 +60,10 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
             "disabled:bg-surface-secondary disabled:cursor-not-allowed",
             error
               ? "border-semantic-danger-main focus-visible:ring-semantic-danger-light"
-              : "border-surface-border " + accentBorderStyles[accentColor] + " " + accentFocusStyles[accentColor],
+              : "border-surface-border " +
+                  accentBorderStyles[accentColor] +
+                  " " +
+                  accentFocusStyles[accentColor],
             className,
           )}
           aria-invalid={error ? "true" : "false"}
