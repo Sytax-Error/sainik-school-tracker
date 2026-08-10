@@ -250,7 +250,7 @@ export function ItemTable({
   return (
     <div className="table-container">
       {/* Filter Bar */}
-      <div className="p-4 border-b border-surface-divider bg-surface-secondary flex flex-wrap gap-4 items-end">
+      <div className="p-4 border-b border-surface-divider bg-gradient-to-r from-surface-secondary to-surface-tertiary/50 flex flex-wrap gap-4 items-end">
         <div className="flex-1 min-w-[200px]">
           <Input
             id="search"
@@ -299,12 +299,12 @@ export function ItemTable({
 
       {/* Active Filter Chips */}
       {(effectiveSearch || localFilters.status || localFilters.phaseId) && (
-        <div className="px-4 py-2 border-b border-surface-divider bg-surface-secondary flex flex-wrap gap-2 items-center">
+        <div className="px-4 py-2 border-b border-surface-divider bg-gradient-to-r from-primary-50 to-info-50 flex flex-wrap gap-2 items-center">
           <span className="text-xs font-medium text-text-secondary">
             Active filters:
           </span>
           {effectiveSearch && (
-            <Badge variant="neutral" size="sm" className="gap-1">
+            <Badge variant="primary" size="sm" className="gap-1">
               Search: {effectiveSearch}
               <button
                 type="button"
@@ -335,7 +335,7 @@ export function ItemTable({
             </Badge>
           )}
           {localFilters.phaseId && showPhaseColumn && (
-            <Badge variant="info" size="sm" className="gap-1">
+            <Badge variant="success" size="sm" className="gap-1">
               Phase: {getPhaseName(localFilters.phaseId)}
               <button
                 type="button"
@@ -369,7 +369,7 @@ export function ItemTable({
       <div className="overflow-x-auto">
         <table className="table">
           <thead>
-            <tr className="bg-surface-secondary border-b border-surface-divider">
+            <tr className="bg-gradient-to-r from-surface-secondary to-surface-tertiary border-b border-surface-divider">
               {renderSortableHeader("Name", "name")}
               {showPhaseColumn && renderSortableHeader("Phase", "phaseId")}
               {renderSortableHeader("Qty", "quantity")}
@@ -437,7 +437,7 @@ export function ItemTable({
               filteredItems.map((item) => (
                 <tr
                   key={item._id}
-                  className="hover:bg-surface-secondary transition-colors duration-150"
+                  className="hover:bg-gradient-to-r from-primary-50 to-info-50 transition-colors duration-150"
                 >
                   <td className="px-4 py-3 text-sm text-text-primary font-medium">
                     {item.name}
@@ -537,7 +537,7 @@ export function ItemTable({
 
       {/* Pagination */}
       {pagination.totalPages > 1 && (
-        <div className="px-4 py-3 border-t border-surface-divider flex flex-wrap items-center justify-between gap-4 bg-surface-secondary">
+        <div className="px-4 py-3 border-t border-surface-divider flex flex-wrap items-center justify-between gap-4 bg-gradient-to-r from-surface-secondary to-surface-tertiary/50">
           <div className="text-sm text-text-secondary">
             Showing {pagination.page * pagination.limit - pagination.limit + 1}{" "}
             to {Math.min(pagination.page * pagination.limit, pagination.total)}{" "}

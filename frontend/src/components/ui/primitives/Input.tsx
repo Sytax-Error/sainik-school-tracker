@@ -5,10 +5,27 @@ export interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
   label?: string;
   error?: string;
   helperText?: string;
+  accentColor?: "primary" | "success" | "warning" | "danger" | "info";
 }
 
+const accentFocusStyles = {
+  primary: "focus-visible:ring-primary-500",
+  success: "focus-visible:ring-semantic-success-main",
+  warning: "focus-visible:ring-semantic-warning-main",
+  danger: "focus-visible:ring-semantic-danger-main",
+  info: "focus-visible:ring-semantic-info-main",
+};
+
+const accentBorderStyles = {
+  primary: "hover:border-primary-300",
+  success: "hover:border-semantic-success-main/50",
+  warning: "hover:border-semantic-warning-main/50",
+  danger: "hover:border-semantic-danger-main/50",
+  info: "hover:border-semantic-info-main/50",
+};
+
 export const Input = forwardRef<HTMLInputElement, InputProps>(
-  ({ label, error, helperText, className = "", id, ...props }, ref) => {
+  ({ label, error, helperText, accentColor = "primary", className = "", id, ...props }, ref) => {
     const inputId = id || label?.toLowerCase().replace(/\s+/g, "-");
 
     return (
@@ -32,7 +49,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
             "disabled:bg-surface-secondary disabled:cursor-not-allowed",
             error
               ? "border-semantic-danger-main focus-visible:ring-semantic-danger-light"
-              : "border-surface-border hover:border-surface-divider focus-visible:ring-primary-500",
+              : "border-surface-border " + accentBorderStyles[accentColor] + " " + accentFocusStyles[accentColor],
             className,
           )}
           aria-invalid={error ? "true" : "false"}

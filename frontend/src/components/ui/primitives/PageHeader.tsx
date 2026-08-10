@@ -13,19 +13,31 @@ export interface PageHeaderProps extends HTMLAttributes<HTMLDivElement> {
     variant?: ButtonProps["variant"];
     size?: ButtonProps["size"];
   };
+  accentColor?: "primary" | "success" | "warning" | "danger" | "info";
   className?: string;
 }
 
 export const PageHeader = forwardRef<HTMLDivElement, PageHeaderProps>(
   (
-    { breadcrumb, title, description, action, className = "", ...props },
+    { breadcrumb, title, description, action, accentColor = "primary", className = "", ...props },
     ref,
   ) => {
+    const accentStyles = {
+      primary: "bg-gradient-to-r from-primary-500 to-primary-600",
+      success: "bg-gradient-to-r from-semantic-success-main to-semantic-success-dark",
+      warning: "bg-gradient-to-r from-semantic-warning-main to-semantic-warning-dark",
+      danger: "bg-gradient-to-r from-semantic-danger-main to-semantic-danger-dark",
+      info: "bg-gradient-to-r from-semantic-info-main to-semantic-info-dark",
+    };
+
     return (
-      <div ref={ref} className={cn("space-y-2", className)} {...props}>
+      <div ref={ref} className={cn("space-y-2 relative", className)} {...props}>
+        {accentColor && (
+          <div className={`absolute -top-2 -left-2 -right-2 h-1 rounded-t-lg ${accentStyles[accentColor]} opacity-50`} />
+        )}
         {breadcrumb && breadcrumb.length > 0 && (
           <nav
-            className="flex items-center gap-1.5 text-sm text-text-tertiary"
+            className="flex items-center gap-1.5 text-sm text-text-tertiary relative z-10"
             aria-label="Breadcrumb"
           >
             {breadcrumb.map((item, index) => (
@@ -65,7 +77,7 @@ export const PageHeader = forwardRef<HTMLDivElement, PageHeaderProps>(
             ))}
           </nav>
         )}
-        <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4">
+        <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4 relative z-10">
           <div>
             <h1 className="text-2xl font-bold text-text-primary">{title}</h1>
             {description && (

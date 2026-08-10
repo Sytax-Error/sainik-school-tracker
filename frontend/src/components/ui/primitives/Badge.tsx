@@ -7,7 +7,7 @@ import {
 } from "@/utils/designTokens";
 
 export interface BadgeProps extends HTMLAttributes<HTMLSpanElement> {
-  variant?: "neutral" | "info" | "success" | "warning" | "danger";
+  variant?: "neutral" | "primary" | "info" | "success" | "warning" | "danger";
   size?: "sm" | "md";
   dot?: boolean;
 }
@@ -18,6 +18,12 @@ const variantStyles = {
     text: "text-text-secondary",
     dot: "bg-text-tertiary",
     border: "border-surface-border",
+  },
+  primary: {
+    bg: "bg-primary-50",
+    text: "text-primary-700",
+    dot: "bg-primary-500",
+    border: "border-primary-200",
   },
   info: {
     bg: "bg-semantic-info-light",

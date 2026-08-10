@@ -65,19 +65,23 @@ export function DashboardPage(): JSX.Element {
           title="Total Sanctioned Value"
           value={dashboard?.summary?.totalValue || 0}
           formatter={formatCurrency}
+          accentColor="primary"
         />
         <StatCard
           title="Overall Progress"
           value={dashboard?.summary?.overallProgress || 0}
           formatter={formatPercent}
+          accentColor="success"
         />
         <StatCard
           title="Total Items"
           value={dashboard?.summary?.totalItems || 0}
+          accentColor="info"
         />
         <StatCard
           title="On Hold Items"
           value={dashboard?.summary?.statusCounts?.ON_HOLD || 0}
+          accentColor="warning"
         />
       </div>
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">

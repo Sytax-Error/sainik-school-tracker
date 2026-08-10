@@ -2,10 +2,19 @@ import { type HTMLAttributes, forwardRef } from "react";
 import { cn } from "@/utils/cn";
 
 export interface CardProps extends HTMLAttributes<HTMLDivElement> {
-  variant?: "default" | "outlined" | "elevated";
+  variant?: "default" | "outlined" | "elevated" | "gradient";
   padding?: "none" | "sm" | "md" | "lg";
   hover?: boolean;
+  accentColor?: "primary" | "success" | "warning" | "danger" | "info";
 }
+
+const accentStyles = {
+  primary: "bg-gradient-to-r from-primary-500 to-primary-600",
+  success: "bg-gradient-to-r from-semantic-success-main to-semantic-success-dark",
+  warning: "bg-gradient-to-r from-semantic-warning-main to-semantic-warning-dark",
+  danger: "bg-gradient-to-r from-semantic-danger-main to-semantic-danger-dark",
+  info: "bg-gradient-to-r from-semantic-info-main to-semantic-info-dark",
+};
 
 export const Card = forwardRef<HTMLDivElement, CardProps>(
   (
@@ -13,6 +22,7 @@ export const Card = forwardRef<HTMLDivElement, CardProps>(
       variant = "default",
       padding = "md",
       hover = false,
+      accentColor,
       className = "",
       children,
       ...props
@@ -23,6 +33,7 @@ export const Card = forwardRef<HTMLDivElement, CardProps>(
       default: "bg-surface-primary border border-surface-border shadow-card",
       outlined: "bg-surface-primary border border-surface-border",
       elevated: "bg-surface-primary shadow-cardHover border-none",
+      gradient: "bg-gradient-to-br from-surface-primary via-surface-primary to-surface-secondary border border-surface-border/50",
     };
 
     const paddingStyles = {
@@ -45,9 +56,13 @@ export const Card = forwardRef<HTMLDivElement, CardProps>(
           "rounded-lg",
           hoverStyles,
           className,
+          "relative overflow-hidden",
         )}
         {...props}
       >
+        {accentColor && (
+          <div className={`absolute top-0 left-0 right-0 h-1 ${accentStyles[accentColor]}`} />
+        )}
         {children}
       </div>
     );

@@ -61,6 +61,7 @@ export function PhasePage(): JSX.Element {
         <PageHeader
           breadcrumb={[{ label: "Dashboard", href: "/" }]}
           title="Loading..."
+          accentColor="primary"
         />
       </div>
     );
@@ -72,8 +73,9 @@ export function PhasePage(): JSX.Element {
         breadcrumb={[{ label: "Dashboard", href: "/" }]}
         title={phase?.name || `Phase ${phaseId}`}
         description="View and update item progress"
+        accentColor="primary"
       />
-      <Card variant="default" padding="none">
+      <Card variant="default" padding="none" accentColor="primary">
         {itemsLoading ? (
           <div className="p-8 text-center text-text-secondary">
             Loading items...
