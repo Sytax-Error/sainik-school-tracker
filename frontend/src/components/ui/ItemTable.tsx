@@ -1,4 +1,5 @@
 import { useState, useMemo, useCallback } from "react";
+import { useDebounce } from "@/hooks";
 import { useUpdateItemProgress } from "@/api/hooks";
 import type {
   Item,
@@ -7,7 +8,18 @@ import type {
   ItemFilters,
 } from "@/api/types";
 import { formatCurrency } from "@/utils/designTokens";
-import { Input, Select, StatusBadge, Button } from "./primitives";
+import {
+  Input,
+  Select,
+  StatusBadge,
+  Button,
+  Badge,
+  TableProgressBar,
+  FilterBarSkeleton,
+  TableSkeleton,
+  EmptyState,
+} from "./primitives";
+import { useToastHelpers } from "./Toast";
 
 interface PhaseOption {
   id: string;
@@ -57,6 +69,13 @@ export function ItemTable({
     sortBy: initialFilters.sortBy || "name",
     sortOrder: initialFilters.sortOrder || "asc",
   });
+  const [searchInput, setSearchInput] = useState("");
+  const debouncedSearch = useDebounce(searchInput, 300);
+
+  const { success, error: showError } = useToastHelpers();
+
+  // Use debounced search for filtering, but keep localFilters for other filters
+  const effectiveSearch = debouncedSearch;
 
   const handleEditClick = (item: Item) => {
     setEditingId(item._id);
@@ -76,8 +95,14 @@ export function ItemTable({
         },
       },
       {
-        onSuccess: () => setEditingId(null),
-        onError: (err) => alert(`Failed to update: ${err.message}`),
+        onSuccess: () => {
+          setEditingId(null);
+          success(
+            "Item updated",
+            "Progress, status, and remarks have been saved",
+          );
+        },
+        onError: (err) => showError("Update failed", err.message),
       },
     );
   };
@@ -138,8 +163,8 @@ export function ItemTable({
 
   const filteredItems = useMemo(() => {
     return sortedItems.filter((item) => {
-      if (localFilters.search) {
-        const searchLower = localFilters.search.toLowerCase();
+      if (effectiveSearch) {
+        const searchLower = effectiveSearch.toLowerCase();
         if (!item.name.toLowerCase().includes(searchLower)) {
           return false;
         }
@@ -152,21 +177,14 @@ export function ItemTable({
       }
       return true;
     });
-  }, [
-    sortedItems,
-    localFilters.search,
-    localFilters.status,
-    localFilters.phaseId,
-  ]);
+  }, [sortedItems, effectiveSearch, localFilters.status, localFilters.phaseId]);
 
   // Loading state
   if (isLoading) {
     return (
       <div className="table-container">
-        <div className="p-8 text-center text-text-secondary">
-          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary-500 mx-auto mb-4"></div>
-          Loading items...
-        </div>
+        <FilterBarSkeleton />
+        <TableSkeleton rows={5} columns={showPhaseColumn ? 8 : 7} />
       </div>
     );
   }
@@ -225,8 +243,8 @@ export function ItemTable({
           <Input
             id="search"
             placeholder="Search by name..."
-            value={localFilters.search || ""}
-            onChange={(e) => handleFilterChange("search", e.target.value)}
+            value={searchInput}
+            onChange={(e) => setSearchInput(e.target.value)}
             label="Search"
           />
         </div>
@@ -267,6 +285,74 @@ export function ItemTable({
         </div>
       </div>
 
+      {/* Active Filter Chips */}
+      {(effectiveSearch || localFilters.status || localFilters.phaseId) && (
+        <div className="px-4 py-2 border-b border-surface-divider bg-surface-secondary flex flex-wrap gap-2 items-center">
+          <span className="text-xs font-medium text-text-secondary">
+            Active filters:
+          </span>
+          {effectiveSearch && (
+            <Badge variant="neutral" size="sm" className="gap-1">
+              Search: {effectiveSearch}
+              <button
+                type="button"
+                onClick={() => {
+                  setSearchInput("");
+                  handleFilterChange("search", "");
+                }}
+                className="ml-1 hover:text-text-primary transition-colors"
+                aria-label="Clear search filter"
+              >
+                ×
+              </button>
+            </Badge>
+          )}
+          {localFilters.status && (
+            <Badge variant="info" size="sm" className="gap-1">
+              Status:{" "}
+              {statusOptions.find((s) => s.value === localFilters.status)
+                ?.label || localFilters.status}
+              <button
+                type="button"
+                onClick={() => handleFilterChange("status", undefined)}
+                className="ml-1 hover:text-text-primary transition-colors"
+                aria-label="Clear status filter"
+              >
+                ×
+              </button>
+            </Badge>
+          )}
+          {localFilters.phaseId && showPhaseColumn && (
+            <Badge variant="info" size="sm" className="gap-1">
+              Phase: {getPhaseName(localFilters.phaseId)}
+              <button
+                type="button"
+                onClick={() => handleFilterChange("phaseId", undefined)}
+                className="ml-1 hover:text-text-primary transition-colors"
+                aria-label="Clear phase filter"
+              >
+                ×
+              </button>
+            </Badge>
+          )}
+          {(effectiveSearch || localFilters.status || localFilters.phaseId) && (
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={() => {
+                setSearchInput("");
+                handleFilterChange("search", "");
+                handleFilterChange("status", undefined);
+                handleFilterChange("phaseId", undefined);
+              }}
+              className="text-xs"
+            >
+              Clear All
+            </Button>
+          )}
+        </div>
+      )}
+
       {/* Table */}
       <div className="overflow-x-auto">
         <table className="table">
@@ -289,11 +375,50 @@ export function ItemTable({
               <tr>
                 <td
                   colSpan={showPhaseColumn ? 8 : 7}
-                  className="px-4 py-8 text-center text-text-tertiary"
+                  className="px-4 py-12 text-center"
                 >
-                  {items.length === 0
-                    ? "No items available"
-                    : "No items found matching your filters"}
+                  <EmptyState
+                    title={
+                      items.length === 0
+                        ? "No items available"
+                        : "No items found matching your filters"
+                    }
+                    description={
+                      items.length > 0
+                        ? "Try changing your search or removing the selected filters."
+                        : undefined
+                    }
+                    icon={
+                      <svg
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                        aria-hidden="true"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={1.5}
+                          d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                        />
+                      </svg>
+                    }
+                    action={
+                      items.length > 0
+                        ? {
+                            label: "Clear Filters",
+                            onClick: () => {
+                              setSearchInput("");
+                              handleFilterChange("search", "");
+                              handleFilterChange("status", undefined);
+                              handleFilterChange("phaseId", undefined);
+                            },
+                            variant: "ghost",
+                            size: "sm",
+                          }
+                        : undefined
+                    }
+                  />
                 </td>
               </tr>
             ) : (
@@ -343,17 +468,10 @@ export function ItemTable({
                         className="w-20"
                       />
                     ) : (
-                      <div className="w-32">
-                        <div className="h-2 bg-surface-tertiary rounded-full overflow-hidden">
-                          <div
-                            className="h-full bg-primary-500 transition-all duration-300"
-                            style={{ width: `${item.progressPercent}%` }}
-                          />
-                        </div>
-                        <span className="text-xs text-text-tertiary">
-                          {item.progressPercent}%
-                        </span>
-                      </div>
+                      <TableProgressBar
+                        value={item.progressPercent}
+                        variant="default"
+                      />
                     )}
                   </td>
                   <td className="px-4 py-3 text-sm">

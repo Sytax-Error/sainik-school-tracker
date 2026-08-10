@@ -1,4 +1,5 @@
 import { forwardRef, type InputHTMLAttributes } from "react";
+import { cn } from "@/utils/cn";
 
 export interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
   label?: string;
@@ -23,19 +24,17 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
         <input
           ref={ref}
           id={inputId}
-          className={`
-            w-full px-3 py-2 text-sm bg-surface-primary border rounded-md
-            text-text-primary placeholder-text-tertiary
-            transition-colors duration-200
-            focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-0
-            disabled:bg-surface-secondary disabled:cursor-not-allowed
-            ${
-              error
-                ? "border-semantic-danger-main focus-visible:ring-semantic-danger-light"
-                : "border-surface-border hover:border-surface-divider focus-visible:ring-primary-500"
-            }
-            ${className}
-          `}
+          className={cn(
+            "w-full px-3 py-2 text-sm bg-surface-primary border rounded-md",
+            "text-text-primary placeholder-text-tertiary",
+            "transition-colors duration-200",
+            "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-0",
+            "disabled:bg-surface-secondary disabled:cursor-not-allowed",
+            error
+              ? "border-semantic-danger-main focus-visible:ring-semantic-danger-light"
+              : "border-surface-border hover:border-surface-divider focus-visible:ring-primary-500",
+            className,
+          )}
           aria-invalid={error ? "true" : "false"}
           aria-describedby={
             error

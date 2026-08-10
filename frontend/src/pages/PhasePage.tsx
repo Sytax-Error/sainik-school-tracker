@@ -1,7 +1,8 @@
-import { useParams, Link } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { usePhase, usePhases, useItems } from "@/api/hooks";
 import { ItemTable } from "@/components/ui/ItemTable";
-import { useCallback, useMemo, useState, useEffect } from "react";
+import { PageHeader } from "@/components/ui/primitives";
+import { useCallback, useMemo, useState } from "react";
 import type { ItemFilters } from "@/api/types";
 
 export function PhasePage(): JSX.Element {
@@ -31,11 +32,7 @@ export function PhasePage(): JSX.Element {
     sortOrder: "asc",
   });
 
-  // Update filters when actualPhaseId changes (e.g., after phases load)
-  useEffect(() => {
-    setFilters((prev) => ({ ...prev, phaseId: actualPhaseId }));
-  }, [actualPhaseId]);
-
+  // Update filters when actualPhaseId changes
   const handleFiltersChange = useCallback(
     (newFilters: Partial<ItemFilters>) => {
       setFilters((prev) => ({ ...prev, ...newFilters }));
@@ -48,41 +45,21 @@ export function PhasePage(): JSX.Element {
   if (phasesLoading || phaseLoading) {
     return (
       <div className="space-y-6">
-        <div className="flex items-center justify-between">
-          <div>
-            <Link
-              to="/"
-              className="text-sm text-text-tertiary hover:text-text-primary"
-            >
-              Dashboard
-            </Link>
-            <h1 className="mt-1 text-2xl font-bold text-text-primary">
-              Loading...
-            </h1>
-          </div>
-        </div>
+        <PageHeader
+          breadcrumb={[{ label: "Dashboard", href: "/" }]}
+          title="Loading..."
+        />
       </div>
     );
   }
 
   return (
     <div className="space-y-6">
-      <div className="flex items-center justify-between">
-        <div>
-          <Link
-            to="/"
-            className="text-sm text-text-tertiary hover:text-text-primary"
-          >
-            Dashboard
-          </Link>
-          <h1 className="mt-1 text-2xl font-bold text-text-primary">
-            {phase?.name || `Phase ${phaseId}`}
-          </h1>
-          <p className="mt-1 text-text-secondary">
-            View and update item progress
-          </p>
-        </div>
-      </div>
+      <PageHeader
+        breadcrumb={[{ label: "Dashboard", href: "/" }]}
+        title={phase?.name || `Phase ${phaseId}`}
+        description="View and update item progress"
+      />
       <div className="bg-surface-primary rounded-lg border border-surface-border">
         {itemsLoading ? (
           <div className="p-8 text-center text-text-secondary">

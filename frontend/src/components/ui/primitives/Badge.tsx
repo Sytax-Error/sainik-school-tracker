@@ -1,9 +1,10 @@
 import { type HTMLAttributes, forwardRef } from "react";
+import { cn } from "@/utils/cn";
 import {
   getStatusTone,
   getStatusLabel,
   type ItemStatus,
-} from "../../../utils/designTokens";
+} from "@/utils/designTokens";
 
 export interface BadgeProps extends HTMLAttributes<HTMLSpanElement> {
   variant?: "neutral" | "info" | "success" | "warning" | "danger";
@@ -66,16 +67,19 @@ export const Badge = forwardRef<HTMLSpanElement, BadgeProps>(
     return (
       <span
         ref={ref}
-        className={`
-          inline-flex items-center font-medium rounded-full border
-          ${styles.bg} ${styles.text} ${styles.border}
-          ${sizeStyles[size]} ${className}
-        `}
+        className={cn(
+          "inline-flex items-center font-medium rounded-full border",
+          styles.bg,
+          styles.text,
+          styles.border,
+          sizeStyles[size],
+          className,
+        )}
         {...props}
       >
         {dot && (
           <span
-            className={`${styles.dot} rounded-full w-1.5 h-1.5 flex-shrink-0`}
+            className={cn(styles.dot, "rounded-full w-1.5 h-1.5 flex-shrink-0")}
             aria-hidden="true"
           />
         )}

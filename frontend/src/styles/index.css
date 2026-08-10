@@ -99,6 +99,16 @@
     @apply w-full text-sm;
   }
 
+  /* Sticky table header */
+  .table thead th {
+    @apply sticky top-0 bg-surface-primary z-10 border-b border-surface-divider;
+  }
+
+  /* Ensure sticky header works with filter bar */
+  .table-container {
+    @apply relative;
+  }
+
   .table th {
     @apply px-4 py-3 text-left font-semibold text-text-secondary bg-surface-secondary border-b border-surface-divider;
   }

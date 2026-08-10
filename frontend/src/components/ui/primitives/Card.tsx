@@ -1,4 +1,5 @@
 import { type HTMLAttributes, forwardRef } from "react";
+import { cn } from "@/utils/cn";
 
 export interface CardProps extends HTMLAttributes<HTMLDivElement> {
   variant?: "default" | "outlined" | "elevated";
@@ -38,7 +39,13 @@ export const Card = forwardRef<HTMLDivElement, CardProps>(
     return (
       <div
         ref={ref}
-        className={`${variantStyles[variant]} ${paddingStyles[padding]} rounded-lg ${hoverStyles} ${className}`}
+        className={cn(
+          variantStyles[variant],
+          paddingStyles[padding],
+          "rounded-lg",
+          hoverStyles,
+          className,
+        )}
         {...props}
       >
         {children}

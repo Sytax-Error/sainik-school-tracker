@@ -1,6 +1,7 @@
 import { useDashboard, usePhases, useItems } from "@/api/hooks";
 import { StatCard, PhaseSummaryCard } from "@/components/ui/StatCards";
 import { ItemTable } from "@/components/ui/ItemTable";
+import { PageHeader } from "@/components/ui/primitives";
 import { formatCurrency, formatPercent } from "@/utils/designTokens";
 import { useState, useCallback } from "react";
 import type { ItemFilters } from "@/api/types";
@@ -34,10 +35,7 @@ export function DashboardPage(): JSX.Element {
   if (dashboardLoading || phasesLoading) {
     return (
       <div className="space-y-6">
-        <div>
-          <h1 className="text-2xl font-bold text-gray-900">Dashboard</h1>
-          <p className="mt-1 text-gray-600">Loading...</p>
-        </div>
+        <PageHeader title="Dashboard" description="Loading..." />
       </div>
     );
   }
@@ -45,10 +43,10 @@ export function DashboardPage(): JSX.Element {
   if (dashboardError) {
     return (
       <div className="space-y-6">
-        <div>
-          <h1 className="text-2xl font-bold text-gray-900">Dashboard</h1>
-          <p className="mt-1 text-red-600">Failed to load dashboard data</p>
-        </div>
+        <PageHeader
+          title="Dashboard"
+          description="Failed to load dashboard data"
+        />
       </div>
     );
   }
@@ -58,12 +56,10 @@ export function DashboardPage(): JSX.Element {
 
   return (
     <div className="space-y-6">
-      <div>
-        <h1 className="text-2xl font-bold text-gray-900">Dashboard</h1>
-        <p className="mt-1 text-gray-600">
-          Overview of project progress and key metrics
-        </p>
-      </div>
+      <PageHeader
+        title="Dashboard"
+        description="Overview of project progress and key metrics"
+      />
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
         <StatCard
           title="Total Sanctioned Value"
@@ -102,12 +98,14 @@ export function DashboardPage(): JSX.Element {
           }}
         />
       </div>
-      <div className="bg-white rounded-lg border border-gray-200">
-        <div className="px-6 py-4 border-b border-gray-200">
-          <h2 className="text-lg font-semibold text-gray-900">All Items</h2>
+      <div className="bg-surface-primary rounded-lg border border-surface-border">
+        <div className="px-6 py-4 border-b border-surface-divider">
+          <h2 className="text-lg font-semibold text-text-primary">All Items</h2>
         </div>
         {itemsLoading ? (
-          <div className="p-8 text-center text-gray-600">Loading items...</div>
+          <div className="p-8 text-center text-text-secondary">
+            Loading items...
+          </div>
         ) : (
           <ItemTable
             items={itemsData?.items || []}
