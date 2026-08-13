@@ -6,7 +6,7 @@ services:
     ports:
       - "27017:27017"
     volumes:
-      - mongodb_data_dev:/data/db
+      - mongodb_data:/data/db
     environment:
       - MONGO_INITDB_DATABASE=sainik_tracker
     healthcheck:
@@ -66,4 +66,4 @@ services:
     command: npm run dev -- --host
 
 volumes:
-  mongodb_data_dev:
+  mongodb_data:
