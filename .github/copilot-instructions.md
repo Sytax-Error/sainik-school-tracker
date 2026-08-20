@@ -448,3 +448,73 @@ npm run seed
 ```
 
 Do not claim a command passed unless it was actually run successfully.
+
+# Modern Premium UI Redesign Rules
+
+When a task requests a modern, stylish, premium, or complete UI redesign, do NOT perform a CSS-only update.
+
+Before making changes, inspect the existing component structure and determine whether the current JSX/layout contributes to the outdated appearance.
+
+You are allowed to:
+
+- Restructure JSX
+- Reorganize layouts
+- Extract reusable UI components
+- Replace generic card structures
+- Create different layouts for different types of information
+- Improve information hierarchy
+- Introduce meaningful icons
+- Add visual progress indicators
+- Improve dashboard composition
+- Redesign tables, filters, cards, navigation, and page layouts
+
+You must preserve:
+
+- Existing API calls
+- API response handling
+- State management
+- Event handlers
+- Business logic
+- Calculations
+- Search functionality
+- Filters
+- Pagination
+- CRUD operations
+- Form validation
+- Routing
+
+## Redesign Validation Rule
+
+A UI redesign is NOT successful if the final result is essentially the same component structure with only:
+
+- Different colors
+- Different borders
+- Different border radius
+- Different shadows
+- Different spacing
+- Colored top borders
+- Minor CSS changes
+
+The redesign must demonstrate meaningful changes in:
+
+- Component composition
+- Layout structure
+- Visual hierarchy
+- Information grouping
+- Data presentation
+- User interaction presentation
+
+Do not make every section look like the same white rectangular card.
+
+Different UI components must have different visual purposes.
+
+For example:
+
+- KPI cards must look like metric components
+- Progress information must use visual progress indicators
+- Phase summaries must communicate project health
+- Tables must look like professional data workspaces
+- Filters must look like a compact control toolbar
+- Navigation must feel like part of a modern application shell
+
+Always preserve functionality while redesigning presentation.

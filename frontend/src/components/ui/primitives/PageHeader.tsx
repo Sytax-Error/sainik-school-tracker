@@ -30,27 +30,23 @@ export const PageHeader = forwardRef<HTMLDivElement, PageHeaderProps>(
     },
     ref,
   ) => {
-    const accentStyles = {
-      primary: "bg-gradient-to-r from-primary-500 to-primary-600",
-      success:
-        "bg-gradient-to-r from-semantic-success-main to-semantic-success-dark",
-      warning:
-        "bg-gradient-to-r from-semantic-warning-main to-semantic-warning-dark",
-      danger:
-        "bg-gradient-to-r from-semantic-danger-main to-semantic-danger-dark",
-      info: "bg-gradient-to-r from-semantic-info-main to-semantic-info-dark",
-    };
-
     return (
-      <div ref={ref} className={cn("space-y-2 relative", className)} {...props}>
+      <div ref={ref} className={cn("relative space-y-3 border-b border-surface-divider pb-5", className)} {...props}>
         {accentColor && (
           <div
-            className={`absolute -top-2 -left-2 -right-2 h-1 rounded-t-lg ${accentStyles[accentColor]} opacity-50`}
+            className={cn(
+              "absolute bottom-0 left-0 h-1 w-14 rounded-full",
+              accentColor === "primary" && "bg-primary-500",
+              accentColor === "success" && "bg-semantic-success-main",
+              accentColor === "warning" && "bg-semantic-warning-main",
+              accentColor === "danger" && "bg-semantic-danger-main",
+              accentColor === "info" && "bg-semantic-info-main",
+            )}
           />
         )}
         {breadcrumb && breadcrumb.length > 0 && (
           <nav
-            className="flex items-center gap-1.5 text-sm text-text-tertiary relative z-10"
+            className="relative z-10 flex items-center gap-1.5 text-xs font-semibold uppercase tracking-[0.14em] text-text-tertiary"
             aria-label="Breadcrumb"
           >
             {breadcrumb.map((item, index) => (
@@ -74,13 +70,13 @@ export const PageHeader = forwardRef<HTMLDivElement, PageHeaderProps>(
                 {item.href ? (
                   <Link
                     to={item.href}
-                    className="hover:text-text-primary transition-colors"
+                    className="transition-colors hover:text-primary-700"
                   >
                     {item.label}
                   </Link>
                 ) : (
                   <span
-                    className="text-text-primary font-medium"
+                    className="font-medium text-text-primary"
                     aria-current="page"
                   >
                     {item.label}
@@ -92,9 +88,9 @@ export const PageHeader = forwardRef<HTMLDivElement, PageHeaderProps>(
         )}
         <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4 relative z-10">
           <div>
-            <h1 className="text-2xl font-bold text-text-primary">{title}</h1>
+            <h1 className="text-3xl font-bold tracking-[-0.03em] text-primary-900">{title}</h1>
             {description && (
-              <p className="mt-1 text-text-secondary">{description}</p>
+              <p className="mt-2 text-sm text-text-secondary">{description}</p>
             )}
           </div>
           {action && (

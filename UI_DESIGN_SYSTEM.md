@@ -5,6 +5,172 @@ This document defines the design system, color palette, and UI guidelines for th
 
 ---
 
+# Modern Premium Visual Direction
+
+## Design Personality
+
+Sainik School Tracker should feel like a modern, premium, professional project management and project intelligence application.
+
+The interface should feel:
+
+- Modern
+- Premium
+- Professional
+- Enterprise-ready
+- Clean
+- Data-focused
+- Structured
+- Visually refined
+- Easy to scan
+
+The application should NOT look like:
+
+- A default Bootstrap dashboard
+- A generic admin panel
+- A basic CRUD application
+- A government portal with only forms and tables
+- A collection of identical white rectangles
+- A UI where every component uses the same card structure
+
+---
+
+## Core Visual Principles
+
+### 1. Hierarchy Before Decoration
+
+Create hierarchy using:
+
+- Typography
+- Layout composition
+- Spacing
+- Surface hierarchy
+- Information grouping
+- Icons
+- Data visualization
+
+Do NOT rely only on:
+
+- Borders
+- Colored top borders
+- Background colors
+- Shadows
+
+---
+
+### 2. Not Everything Should Be a Card
+
+Do not wrap every section inside the same bordered white rectangle.
+
+Use different levels of visual grouping:
+
+1. Application background
+2. Main content surface
+3. Section grouping
+4. Inline information groups
+5. Interactive controls
+
+Cards should only be used when they provide meaningful grouping.
+
+Avoid unnecessary nested cards.
+
+Bad:
+
+Page
+  → Card
+      → Card
+          → Card
+
+Prefer:
+
+Page
+  → Section
+      → Content
+
+---
+
+### 3. Different Components Need Different Visual Roles
+
+Do not use one generic card design for everything.
+
+Different components must communicate different purposes.
+
+For example:
+
+- KPI cards → communicate important metrics
+- Overall progress → use a visual progress representation
+- Phase cards → communicate project health and progress
+- Tables → communicate detailed operational data
+- Filters → behave like compact control toolbars
+- Status → use semantic badges with labels
+
+---
+
+### 4. Use Visual Data Representation
+
+Whenever appropriate, represent data visually instead of showing only plain numbers.
+
+Examples:
+
+- Circular progress indicator for overall progress
+- Horizontal progress bars for phases
+- Status badges
+- Semantic indicators
+- Meaningful icons for metrics
+- Compact statistics
+
+Do not add visual elements only for decoration.
+
+Every icon, badge, indicator, and chart must support understanding of the information.
+
+---
+
+## Premium UI Rules
+
+### Avoid Generic Dashboard Patterns
+
+Do NOT implement:
+
+- Four identical cards with different colored top borders
+- Large empty hero banners
+- Every section inside the same white card
+- Excessive rounded rectangles
+- Decorative gradients
+- Random accent colors
+- Heavy shadows
+- Excessive borders
+- Large empty spaces inside cards
+- Generic dashboard template layouts
+
+---
+
+### Prefer
+
+- Strong information hierarchy
+- Compact page headers
+- Intentional whitespace
+- Layered surfaces
+- Different card compositions based on purpose
+- High-quality icons
+- Compact toolbars
+- Visual progress indicators
+- Semantic status indicators
+- Professional data tables
+- Clear alignment
+- Responsive layouts
+
+---
+
+# Surface Hierarchy
+
+Use different surface levels.
+
+## Level 0 — Application Background
+
+Used for the overall application canvas.
+
+```tsx
+bg-surface-page
+
 ## 📚 Related Documentation
 
 | Document | Purpose | Location |

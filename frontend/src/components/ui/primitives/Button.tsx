@@ -21,7 +21,7 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
     ref,
   ) => {
     const baseStyles =
-      "inline-flex items-center justify-center font-medium transition-all duration-200 rounded-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed active:scale-[0.98]";
+      "inline-flex items-center justify-center rounded-lg font-semibold transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 active:scale-[0.98]";
 
     const variantStyles = {
       primary:
@@ -31,14 +31,14 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
       outline:
         "bg-transparent text-primary-600 border border-primary-600 hover:bg-primary-50 focus-visible:ring-primary-500 active:bg-primary-100",
       ghost:
-        "bg-transparent text-text-secondary hover:bg-surface-tertiary hover:text-text-primary focus-visible:ring-surface-border active:bg-surface-tertiary",
+        "bg-transparent text-text-secondary hover:bg-primary-50 hover:text-primary-700 focus-visible:ring-primary-500 active:bg-primary-100",
       danger:
         "bg-semantic-danger-main text-white hover:bg-semantic-danger-dark focus-visible:ring-semantic-danger-main active:bg-semantic-danger-dark shadow-sm hover:shadow-cardHover",
     };
 
     const sizeStyles = {
       sm: "px-3 py-1.5 text-xs gap-1.5",
-      md: "px-4 py-2 text-sm gap-2",
+      md: "px-4 py-2.5 text-sm gap-2",
       lg: "px-6 py-3 text-base gap-2",
     };
 

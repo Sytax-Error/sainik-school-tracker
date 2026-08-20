@@ -44,14 +44,14 @@ export const ProgressBar = forwardRef<HTMLDivElement, ProgressBarProps>(
       <div ref={ref} className={cn("w-full", className)} {...props}>
         <div
           className={cn(
-            "w-full bg-surface-tertiary rounded-full overflow-hidden",
+            "w-full overflow-hidden rounded-full border border-primary-200 bg-primary-100/80 p-0.5",
             trackStyles[size],
           )}
         >
           <div
             className={cn(
               variantStyles[variant],
-              "rounded-full transition-all duration-300 ease-out",
+              "rounded-full transition-all duration-500 ease-out",
             )}
             style={{
               width: `${percentage}%`,
@@ -97,9 +97,9 @@ export function TableProgressBar({
 
   return (
     <div className="w-32">
-      <div className="h-2 bg-surface-tertiary rounded-full overflow-hidden">
+      <div className="h-2.5 overflow-hidden rounded-full border border-primary-200 bg-primary-100/80 p-0.5">
         <div
-          className={`${variantStyles[variant]} h-full rounded-full transition-all duration-300 ease-out`}
+          className={`${variantStyles[variant]} h-full rounded-full transition-all duration-500 ease-out`}
           style={{ width: `${percentage}%` }}
           role="progressbar"
           aria-valuenow={value}

@@ -9,13 +9,11 @@ export interface CardProps extends HTMLAttributes<HTMLDivElement> {
 }
 
 const accentStyles = {
-  primary: "bg-gradient-to-r from-primary-500 to-primary-600",
-  success:
-    "bg-gradient-to-r from-semantic-success-main to-semantic-success-dark",
-  warning:
-    "bg-gradient-to-r from-semantic-warning-main to-semantic-warning-dark",
-  danger: "bg-gradient-to-r from-semantic-danger-main to-semantic-danger-dark",
-  info: "bg-gradient-to-r from-semantic-info-main to-semantic-info-dark",
+  primary: "bg-primary-500",
+  success: "bg-semantic-success-main",
+  warning: "bg-semantic-warning-main",
+  danger: "bg-semantic-danger-main",
+  info: "bg-semantic-info-main",
 };
 
 export const Card = forwardRef<HTMLDivElement, CardProps>(
@@ -35,8 +33,7 @@ export const Card = forwardRef<HTMLDivElement, CardProps>(
       default: "bg-surface-primary border border-surface-border shadow-card",
       outlined: "bg-surface-primary border border-surface-border",
       elevated: "bg-surface-primary shadow-cardHover border-none",
-      gradient:
-        "bg-gradient-to-br from-surface-primary via-surface-primary to-surface-secondary border border-surface-border/50",
+      gradient: "bg-surface-secondary border border-surface-border",
     };
 
     const paddingStyles = {
@@ -56,7 +53,7 @@ export const Card = forwardRef<HTMLDivElement, CardProps>(
         className={cn(
           variantStyles[variant],
           paddingStyles[padding],
-          "rounded-lg",
+          "rounded-xl",
           hoverStyles,
           className,
           "relative overflow-hidden",

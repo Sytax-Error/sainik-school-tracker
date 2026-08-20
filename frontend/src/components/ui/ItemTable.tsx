@@ -21,6 +21,7 @@ import {
   ItemEditModal,
 } from "./primitives";
 import { useToastHelpers } from "./Toast";
+import { ListFilter, Pencil, Search } from "lucide-react";
 
 interface PhaseOption {
   id: string;
@@ -254,19 +255,28 @@ export function ItemTable({
   ];
 
   return (
-    <div className="table-container">
+    <div className="table-container table-workspace">
+      <div className="flex items-center justify-between border-b border-surface-divider px-4 py-3 sm:px-5">
+        <div className="flex items-center gap-2">
+          <ListFilter className="h-4 w-4 text-primary-400" aria-hidden="true" />
+          <span className="text-sm font-semibold text-primary-900">Item register</span>
+        </div>
+        <span className="text-xs text-text-tertiary">Search, filter, and update records</span>
+      </div>
       {/* Filter Bar */}
-      <div className="p-4 border-b border-surface-divider bg-gradient-to-r from-surface-secondary to-surface-tertiary/50 flex flex-wrap gap-4 items-end">
-        <div className="flex-1 min-w-[200px]">
+      <div className="table-toolbar grid grid-cols-1 items-end gap-3 border-b border-surface-divider p-4 sm:p-5 md:grid-cols-[minmax(0,1fr)_11rem_11rem_auto]">
+        <div className="relative min-w-0">
           <Input
             id="search"
             placeholder="Search by name..."
             value={searchInput}
             onChange={(e) => setSearchInput(e.target.value)}
             label="Search"
+            className="pl-10"
           />
+          <Search className="pointer-events-none absolute bottom-3 left-3 h-4 w-4 text-text-tertiary" aria-hidden="true" />
         </div>
-        <div className="min-w-[150px]">
+        <div className="w-full sm:w-44">
           <Select
             id="status-filter"
             value={localFilters.status || ""}
@@ -278,7 +288,7 @@ export function ItemTable({
           />
         </div>
         {showPhaseColumn && phases.length > 0 && (
-          <div className="min-w-[150px]">
+          <div className="w-full sm:w-44">
             <Select
               id="phase-filter"
               value={localFilters.phaseId || ""}
@@ -296,16 +306,14 @@ export function ItemTable({
             />
           </div>
         )}
-        <div className="flex items-center gap-2 text-sm text-text-secondary">
-          <span>
-            Showing {filteredItems.length} of {pagination.total} items
-          </span>
+        <div className="flex h-11 items-center px-1 text-xs font-medium text-text-tertiary md:justify-end">
+          Showing {filteredItems.length} of {pagination.total} items
         </div>
       </div>
 
       {/* Active Filter Chips */}
       {(effectiveSearch || localFilters.status || localFilters.phaseId) && (
-        <div className="px-4 py-2 border-b border-surface-divider bg-gradient-to-r from-primary-50 to-info-50 flex flex-wrap gap-2 items-center">
+        <div className="flex flex-wrap items-center gap-2 border-b border-primary-100 bg-primary-50/60 px-4 py-2.5">
           <span className="text-xs font-medium text-text-secondary">
             Active filters:
           </span>
@@ -375,7 +383,7 @@ export function ItemTable({
       <div className="overflow-x-auto">
         <table className="table">
           <thead>
-            <tr className="bg-gradient-to-r from-surface-secondary to-surface-tertiary border-b border-surface-divider">
+            <tr className="border-b border-surface-divider bg-surface-secondary">
               {renderSortableHeader("Name", "name")}
               {showPhaseColumn && renderSortableHeader("Phase", "phaseId")}
               {renderSortableHeader("Qty", "quantity")}
@@ -443,14 +451,17 @@ export function ItemTable({
               filteredItems.map((item) => (
                 <tr
                   key={item._id}
-                  className="hover:bg-gradient-to-r from-primary-50 to-info-50 transition-colors duration-150"
+                  className="transition-colors duration-150 hover:bg-primary-50/50"
                 >
-                  <td className="px-4 py-3 text-sm text-text-primary font-medium">
-                    {item.name}
+                  <td className="px-4 py-4 text-sm font-semibold text-primary-900">
+                    <div className="flex min-w-[220px] items-center gap-3">
+                      <span className="grid h-8 w-8 shrink-0 place-items-center rounded-lg bg-primary-100 text-xs font-bold text-primary-500" aria-hidden="true">{item.name.charAt(0).toUpperCase()}</span>
+                      <span>{item.name}</span>
+                    </div>
                   </td>
                   {showPhaseColumn && (
-                    <td className="px-4 py-3 text-sm text-text-secondary">
-                      {getPhaseName(item.phaseId)}
+                    <td className="px-4 py-4 text-sm text-text-secondary">
+                      <Badge variant="primary" size="sm">{getPhaseName(item.phaseId)}</Badge>
                     </td>
                   )}
                   <td className="px-4 py-3 text-sm text-text-primary tabular-nums">
@@ -481,13 +492,15 @@ export function ItemTable({
                       }
                     />
                   </td>
-                  <td className="px-4 py-3 text-sm">
+                  <td className="px-4 py-4 text-sm">
                     <Button
                       size="sm"
                       variant="ghost"
                       onClick={() => handleEditClick(item)}
                       disabled={updateProgress.isPending}
+                      aria-label={`Edit ${item.name}`}
                     >
+                      <Pencil className="h-4 w-4" aria-hidden="true" />
                       Edit
                     </Button>
                   </td>
@@ -509,7 +522,7 @@ export function ItemTable({
 
       {/* Pagination */}
       {pagination.totalPages > 1 && (
-        <div className="px-4 py-3 border-t border-surface-divider flex flex-wrap items-center justify-between gap-4 bg-gradient-to-r from-surface-secondary to-surface-tertiary/50">
+        <div className="flex flex-wrap items-center justify-between gap-4 border-t border-surface-divider bg-surface-secondary/70 px-4 py-3">
           <div className="text-sm text-text-secondary">
             Showing {pagination.page * pagination.limit - pagination.limit + 1}{" "}
             to {Math.min(pagination.page * pagination.limit, pagination.total)}{" "}

@@ -63,10 +63,10 @@ export const Select = forwardRef<HTMLSelectElement, SelectProps>(
             ref={ref}
             id={selectId}
             className={cn(
-              "w-full px-3 py-2 text-sm bg-surface-primary border rounded-md",
+              "w-full rounded-lg border bg-surface-primary px-3 py-2.5 text-sm shadow-sm",
               "text-text-primary appearance-none",
-              "transition-colors duration-200",
-              "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-0",
+              "transition-all duration-200",
+              "focus-visible:border-primary-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500/20 focus-visible:ring-offset-0",
               "disabled:bg-surface-secondary disabled:cursor-not-allowed",
               "pr-10", // Space for custom arrow
               error

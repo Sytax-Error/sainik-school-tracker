@@ -4,7 +4,6 @@ import { ItemTable } from "@/components/ui/ItemTable";
 import { PageHeader } from "@/components/ui/primitives";
 import { useCallback, useMemo, useState, useEffect, useRef } from "react";
 import type { ItemFilters } from "@/api/types";
-import { Card } from "@/components/ui/primitives";
 
 export function PhasePage(): JSX.Element {
   const { phaseId } = useParams<{ phaseId: string }>();
@@ -84,7 +83,7 @@ export function PhasePage(): JSX.Element {
         description="View and update item progress"
         accentColor="primary"
       />
-      <Card variant="default" padding="none" accentColor="primary">
+      <section aria-label={`${phase?.name || `Phase ${phaseId}`} items`}>
         {itemsLoading ? (
           <div className="p-8 text-center text-text-secondary">
             Loading items...
@@ -109,7 +108,7 @@ export function PhasePage(): JSX.Element {
             error={null}
           />
         )}
-      </Card>
+      </section>
     </div>
   );
 }

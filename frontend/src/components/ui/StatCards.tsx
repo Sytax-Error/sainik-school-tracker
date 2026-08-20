@@ -1,7 +1,9 @@
-import { Card, CardContent } from "./primitives";
+import { Card, CardContent, Badge } from "./primitives";
 import { formatCurrency, formatPercent } from "@/utils/designTokens";
 import { ProgressBar } from "./primitives";
 import { Link } from "react-router-dom";
+import type { ReactNode } from "react";
+import { ArrowUpRight, ClipboardList, CircleDollarSign } from "lucide-react";
 
 interface StatCardProps {
   title: string;
@@ -12,6 +14,8 @@ interface StatCardProps {
     label: string;
     positive?: boolean;
   };
+  icon?: ReactNode;
+  supportingText?: string;
   accentColor?: "primary" | "success" | "warning" | "danger" | "info";
 }
 
@@ -20,20 +24,11 @@ export function StatCard({
   value,
   formatter,
   trend,
+  icon,
+  supportingText,
   accentColor = "primary",
 }: StatCardProps): JSX.Element {
   const displayValue = formatter ? formatter(value as number) : String(value);
-
-  const accentStyles = {
-    primary: "bg-gradient-to-r from-primary-500 to-primary-600",
-    success:
-      "bg-gradient-to-r from-semantic-success-main to-semantic-success-dark",
-    warning:
-      "bg-gradient-to-r from-semantic-warning-main to-semantic-warning-dark",
-    danger:
-      "bg-gradient-to-r from-semantic-danger-main to-semantic-danger-dark",
-    info: "bg-gradient-to-r from-semantic-info-main to-semantic-info-dark",
-  };
 
   const accentBgStyles = {
     primary: "bg-primary-50",
@@ -43,27 +38,34 @@ export function StatCard({
     info: "bg-semantic-info-light",
   };
 
+  const accentTextStyles = {
+    primary: "text-primary-700",
+    success: "text-semantic-success-dark",
+    warning: "text-semantic-warning-dark",
+    danger: "text-semantic-danger-dark",
+    info: "text-semantic-info-dark",
+  };
+
   return (
     <Card
       variant="default"
       padding="md"
       hover
-      className="relative overflow-hidden"
+      className="relative overflow-hidden border-surface-border/80 shadow-card hover:-translate-y-0.5 hover:shadow-cardHover"
     >
-      {/* Accent bar at top */}
-      <div
-        className={`absolute top-0 left-0 right-0 h-1 ${accentStyles[accentColor]}`}
-      />
-      <CardContent className="pt-0 relative">
-        <div className="flex items-center justify-between">
-          <p className="text-sm font-medium text-text-secondary">{title}</p>
+      <CardContent className="relative pt-0">
+        <div className="flex items-start justify-between gap-3">
+          <div>
+            <p className="text-xs font-semibold uppercase tracking-[0.12em] text-text-tertiary">{title}</p>
+            {supportingText && <p className="mt-1 text-xs text-text-secondary">{supportingText}</p>}
+          </div>
           <div
-            className={`w-10 h-10 rounded-lg flex items-center justify-center ${accentBgStyles[accentColor]}`}
+            className={`grid h-10 w-10 shrink-0 place-items-center rounded-xl ${accentBgStyles[accentColor]} ${accentTextStyles[accentColor]}`}
           >
-            <div className="w-5 h-5 rounded-full bg-current opacity-20" />
+            {icon || <span className="h-2.5 w-2.5 rounded-full bg-current" aria-hidden="true" />}
           </div>
         </div>
-        <p className="mt-2 text-3xl font-bold text-text-primary">
+        <p className="mt-6 whitespace-nowrap text-xl font-bold leading-tight tracking-[-0.03em] text-primary-900 sm:text-2xl">
           {displayValue}
         </p>
         {trend && (
@@ -124,58 +126,68 @@ export function PhaseSummaryCard({
     info: "text-semantic-info-main",
   };
 
+  const isComplete = phase.progressPercent >= 100;
+  const isActive = phase.progressPercent > 0 && !isComplete;
+
   return (
     <Link
       to={`/phase/${phaseId}`}
       aria-label={`Open ${phase.name}`}
-      className="block rounded-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2"
+      className="app-reveal block rounded-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2"
     >
       <Card
         variant="default"
         padding="md"
         hover
-        className="relative overflow-hidden"
+        className="relative overflow-hidden border-surface-border/80 shadow-card transition-transform hover:-translate-y-1 hover:shadow-cardHover"
       >
-      <div
-        className={`absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-primary-500 to-primary-600`}
-      />
-      <CardContent className="pt-0 relative">
-        <h3 className="text-lg font-semibold text-text-primary">
-          {phase.name}
-        </h3>
-        <div className="mt-4 space-y-4">
-          <div className="flex justify-between text-sm">
-            <span className="text-text-secondary">Sanctioned Value</span>
-            <span className="font-medium text-text-primary">
-              {formatCurrency(phase.totalValue)}
-            </span>
-          </div>
-          <div>
-            <div className="flex justify-between text-sm mb-1.5">
-              <span className="text-text-secondary">Progress</span>
-              <span
-                className={`font-medium ${progressTextStyles[progressColor]}`}
-              >
-                {formatPercent(phase.progressPercent)}
-              </span>
+        <CardContent className="relative pt-0">
+          <div className="flex items-start justify-between gap-4 border-b border-surface-divider pb-5">
+            <div>
+              <div className="flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.12em] text-text-tertiary">
+                <span className="grid h-7 w-7 place-items-center rounded-lg bg-primary-100 text-primary-500">
+                  <ClipboardList className="h-4 w-4" strokeWidth={1.8} aria-hidden="true" />
+                </span>
+                Phase overview
+              </div>
+              <h3 className="mt-3 text-xl font-bold tracking-[-0.03em] text-primary-900">{phase.name}</h3>
             </div>
-            <div className={progressStyles[progressColor] + " rounded-lg p-3"}>
-              <ProgressBar
-                value={phase.progressPercent}
-                max={100}
-                variant={progressColor}
-                size="md"
-              />
+            <div className="flex items-center gap-2">
+              <Badge variant={isComplete ? "success" : isActive ? "info" : "neutral"} size="sm" dot>
+                {isComplete ? "Completed" : isActive ? "Active" : "Not started"}
+              </Badge>
+              <ArrowUpRight className="h-4 w-4 text-text-tertiary" aria-hidden="true" />
             </div>
           </div>
-          <div className="flex justify-between text-sm">
-            <span className="text-text-secondary">Items</span>
-            <span className="font-medium text-text-primary">
-              {phase.itemCount}
-            </span>
+          <div className="mt-6 grid grid-cols-2 gap-3">
+            <div className="rounded-xl bg-surface-secondary p-4">
+              <div className="flex items-center gap-2 text-xs text-text-tertiary">
+                <CircleDollarSign className="h-4 w-4 text-primary-400" aria-hidden="true" />
+                Sanctioned value
+              </div>
+              <p className="mt-2 text-base font-bold text-primary-900">{formatCurrency(phase.totalValue)}</p>
+            </div>
+            <div className="rounded-xl bg-surface-secondary p-4">
+              <div className="flex items-center gap-2 text-xs text-text-tertiary">
+                <ClipboardList className="h-4 w-4 text-primary-400" aria-hidden="true" />
+                Items tracked
+              </div>
+              <p className="mt-2 text-base font-bold text-primary-900">{phase.itemCount}</p>
+            </div>
           </div>
-        </div>
-      </CardContent>
+          <div className="mt-6 rounded-xl border border-surface-divider bg-surface-secondary/60 p-4">
+            <div className="mb-3 flex items-end justify-between">
+              <div>
+                <p className="text-xs font-semibold uppercase tracking-[0.1em] text-text-tertiary">Execution progress</p>
+                <p className="mt-1 text-xs text-text-secondary">Value-weighted phase completion</p>
+              </div>
+              <span className={`text-2xl font-bold tracking-[-0.04em] ${progressTextStyles[progressColor]}`}>{formatPercent(phase.progressPercent)}</span>
+            </div>
+            <div className={progressStyles[progressColor] + " rounded-lg p-1.5"}>
+              <ProgressBar value={phase.progressPercent} max={100} variant={progressColor} size="md" />
+            </div>
+          </div>
+        </CardContent>
       </Card>
     </Link>
   );

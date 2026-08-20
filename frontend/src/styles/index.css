@@ -27,8 +27,8 @@
 
   body {
     margin: 0;
-    background-color: #f7f8fa;
-    color: #101828;
+      background-color: #0b1220;
+      color: #f3f7fc;
     font-size: 1rem;
     line-height: 1.5;
   }
@@ -51,20 +51,20 @@
   input:focus-visible,
   select:focus-visible,
   textarea:focus-visible {
-    ring-color: #3f76b3;
-    ring-offset-color: #ffffff;
+      ring-color: #6d9ff8;
+      ring-offset-color: #0b1220;
   }
 
   /* Selection styles */
   ::selection {
-    background-color: #d9e7f3;
-    color: #132943;
+      background-color: #203451;
+      color: #edf4ff;
   }
 
   /* Scrollbar styles */
   * {
     scrollbar-width: thin;
-    scrollbar-color: #e5e7eb transparent;
+      scrollbar-color: #304a70 transparent;
   }
 
   *::-webkit-scrollbar {
@@ -77,18 +77,161 @@
   }
 
   *::-webkit-scrollbar-thumb {
-    background-color: #e5e7eb;
+      background-color: #304a70;
     border-radius: 4px;
     border: 2px solid transparent;
     background-clip: content-box;
   }
 
   *::-webkit-scrollbar-thumb:hover {
-    background-color: #d1d5db;
+      background-color: #476a9d;
   }
 }
 
 @layer components {
+  .app-reveal {
+    animation: app-reveal 420ms ease-out both;
+  }
+
+  .app-reveal > *:nth-child(2) {
+    animation-delay: 60ms;
+  }
+
+  .app-reveal > *:nth-child(3) {
+    animation-delay: 120ms;
+  }
+
+  .app-reveal > *:nth-child(4) {
+    animation-delay: 180ms;
+  }
+
+  @keyframes app-reveal {
+    from {
+      opacity: 0;
+      transform: translateY(8px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .app-reveal {
+      animation: none;
+    }
+  }
+
+  .app-header {
+      background: #0f1b2d;
+      box-shadow: 0 10px 24px rgb(0 0 0 / 0.25);
+  }
+
+  .app-sidebar {
+    min-height: 100vh;
+    background: #14273f;
+    box-shadow: 10px 0 26px rgb(20 39 63 / 0.08);
+  }
+
+  .brand-mark {
+    display: grid;
+    width: 34px;
+    height: 34px;
+    place-items: center;
+    border: 1px solid rgb(255 255 255 / 0.18);
+    border-radius: 10px;
+      background: #1fa774;
+    color: white;
+    font-size: 1rem;
+    font-weight: 700;
+  }
+
+  .sidebar-link {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    border-radius: 10px;
+    padding: 0.7rem 0.75rem;
+    color: rgb(255 255 255 / 0.58);
+    font-size: 0.875rem;
+    font-weight: 600;
+    transition: background-color 150ms ease, color 150ms ease;
+  }
+
+  .sidebar-link:hover {
+    background: rgb(255 255 255 / 0.08);
+    color: white;
+  }
+
+  .sidebar-link-active {
+    background: #2f855a;
+    color: white;
+    box-shadow: 0 7px 16px rgb(0 0 0 / 0.14);
+  }
+
+  .sidebar-link-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 999px;
+    background: currentColor;
+    opacity: 0.7;
+  }
+
+  .mobile-nav-toggle {
+    border: 1px solid rgb(255 255 255 / 0.16);
+    border-radius: 8px;
+    padding: 0.4rem 0.7rem;
+    color: rgb(255 255 255 / 0.8);
+    font-size: 0.75rem;
+    font-weight: 600;
+  }
+
+  .dashboard-status-strip {
+    padding: 1.25rem 1.5rem;
+    border: 1px solid #203451;
+    border-radius: 1rem;
+    background: #111c2d;
+    box-shadow: 0 8px 22px rgb(0 0 0 / 0.16);
+  }
+
+  .contract-panel {
+    padding: 1.5rem;
+    border: 1px solid #203451;
+    border-radius: 1rem;
+    background: #111c2d;
+    box-shadow: 0 8px 22px rgb(0 0 0 / 0.16);
+  }
+
+  .contract-summary-cell {
+    display: flex;
+    min-width: 0;
+    align-items: center;
+    gap: 0.75rem;
+    border: 1px solid #203451;
+    border-radius: 0.75rem;
+    padding: 0.75rem;
+    background: #172235;
+  }
+
+  .contract-details summary {
+    cursor: pointer;
+    border: 1px solid #304a70;
+    border-radius: 0.6rem;
+    padding: 0.55rem 0.75rem;
+    color: #9fc3ff;
+    font-size: 0.75rem;
+    font-weight: 600;
+    list-style: none;
+  }
+
+  .contract-details summary::-webkit-details-marker {
+    display: none;
+  }
+
+  .contract-details summary:hover {
+    background: #17263b;
+  }
+
   /* Utility for visually hidden content (screen readers only) */
   .sr-only {
     position: absolute;
@@ -104,7 +247,15 @@
 
   /* Table base styles */
   .table-container {
-    @apply overflow-x-auto rounded-lg border border-surface-border bg-surface-primary;
+    @apply overflow-x-auto rounded-2xl border border-surface-border bg-surface-primary shadow-card;
+  }
+
+  .table-workspace {
+    box-shadow: 0 14px 32px rgb(0 0 0 / 0.2);
+  }
+
+  .table-toolbar {
+    background: #141f31;
   }
 
   .table {
@@ -123,14 +274,17 @@
 
   .table th {
     @apply px-4 py-3 text-left font-semibold text-text-secondary bg-surface-secondary border-b border-surface-divider;
+    font-size: 0.68rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
   }
 
   .table td {
-    @apply px-4 py-3 text-text-primary border-b border-surface-divider;
+    @apply border-b border-surface-divider px-4 py-4 text-text-primary;
   }
 
   .table tbody tr {
-    @apply transition-colors duration-150 hover:bg-surface-secondary;
+    @apply transition-colors duration-150 hover:bg-primary-50/50;
   }
 
   .table tbody tr:last-child td {
