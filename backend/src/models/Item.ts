@@ -17,6 +17,11 @@ export interface IItem extends Document {
   quantity: number;
   rate: number;
   amount: number;
+  // Tracking quantity fields (optional operational details)
+  deliveredQty?: number;
+  installedQty?: number;
+  testedQty?: number;
+  acceptedQty?: number;
   status: ItemStatus;
   progressPercent: number;
   valueCompleted: number;
@@ -46,6 +51,11 @@ const itemSchema = new Schema<IItem>(
     quantity: { type: Number, required: true, min: 0 },
     rate: { type: Number, required: true, min: 0 },
     amount: { type: Number, required: true, min: 0 },
+    // Tracking quantity fields (optional operational details)
+    deliveredQty: { type: Number, min: 0 },
+    installedQty: { type: Number, min: 0 },
+    testedQty: { type: Number, min: 0 },
+    acceptedQty: { type: Number, min: 0 },
     status: {
       type: String,
       enum: ["NOT_STARTED", "IN_PROGRESS", "COMPLETED", "ON_HOLD", "CANCELLED"],

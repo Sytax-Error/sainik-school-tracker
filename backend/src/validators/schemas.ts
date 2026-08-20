@@ -20,10 +20,44 @@ export const itemListQuerySchema =
   paginationQuerySchema.merge(itemFiltersSchema);
 
 export const updateProgressSchema = z.object({
-  progressPercent: z.number().int().min(0).max(100),
+  progressPercent: z.number().int().min(0).max(100).optional(),
   status: z.enum(itemStatusEnum).optional(),
   remarks: z.string().optional(),
-});
+  // Tracking quantity fields (optional)
+  deliveredQty: z.number().int().min(0).optional(),
+  installedQty: z.number().int().min(0).optional(),
+  testedQty: z.number().int().min(0).optional(),
+  acceptedQty: z.number().int().min(0).optional(),
+}).refine(
+  (data) => {
+    // Validate quantity sequence when provided
+    const { deliveredQty, installedQty, testedQty, acceptedQty } = data;
+    
+    // All quantities must be >= 0 (already enforced by .min(0))
+    // No tracking quantity may exceed sanctioned quantity (validated in controller)
+    
+    // Accepted qty may not exceed tested qty when tested qty is provided
+    if (acceptedQty !== undefined && testedQty !== undefined && acceptedQty > testedQty) {
+      return false;
+    }
+    
+    // Tested qty may not exceed installed qty when installed qty is provided
+    if (testedQty !== undefined && installedQty !== undefined && testedQty > installedQty) {
+      return false;
+    }
+    
+    // Installed qty may not exceed delivered qty when delivered qty is provided
+    if (installedQty !== undefined && deliveredQty !== undefined && installedQty > deliveredQty) {
+      return false;
+    }
+    
+    return true;
+  },
+  {
+    message: "Quantity sequence validation failed: accepted ≤ tested ≤ installed ≤ delivered",
+    path: ["quantitySequence"],
+  }
+);
 
 export const itemIdParamSchema = z.object({
   id: z.string().regex(/^[0-9a-fA-F]{24}$/, "Invalid item ID"),

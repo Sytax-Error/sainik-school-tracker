@@ -31,7 +31,9 @@ export async function getPhases(req: Request, res: Response): Promise<void> {
       0,
     );
     const progressPercent =
-      totalValue > 0 ? Math.round((completedValue / totalValue) * 100) : 0;
+      totalValue > 0
+        ? Math.round((completedValue / totalValue) * 10000) / 100
+        : 0;
 
     return {
       ...phase,
@@ -60,7 +62,9 @@ export async function getPhaseById(req: Request, res: Response): Promise<void> {
     0,
   );
   const progressPercent =
-    totalValue > 0 ? Math.round((completedValue / totalValue) * 100) : 0;
+    totalValue > 0
+      ? Math.round((completedValue / totalValue) * 10000) / 100
+      : 0;
 
   res.json(
     successResponse({

@@ -86,6 +86,7 @@ export function DashboardPage(): JSX.Element {
       </div>
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         <PhaseSummaryCard
+          phaseId="1"
           phase={{
             name: phase1?.name || "Phase 1",
             totalValue: phase1?.totalValue || 0,
@@ -94,6 +95,7 @@ export function DashboardPage(): JSX.Element {
           }}
         />
         <PhaseSummaryCard
+          phaseId="2"
           phase={{
             name: phase2?.name || "Phase 2",
             totalValue: phase2?.totalValue || 0,

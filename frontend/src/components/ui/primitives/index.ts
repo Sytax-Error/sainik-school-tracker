@@ -36,6 +36,8 @@ export {
   type ProgressBarProps,
   type TableProgressBarProps,
 } from "./ProgressBar";
+export { Modal, type ModalProps } from "./Modal";
+export { ItemEditModal, type ItemEditModalProps } from "../ItemEditModal";
 export {
   Skeleton,
   StatCardSkeleton,

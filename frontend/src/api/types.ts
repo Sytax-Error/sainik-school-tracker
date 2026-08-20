@@ -33,6 +33,11 @@ export interface Item {
   quantity: number;
   rate: number;
   amount: number;
+  // Tracking quantity fields (optional operational details)
+  deliveredQty?: number;
+  installedQty?: number;
+  testedQty?: number;
+  acceptedQty?: number;
   status: ItemStatus;
   progressPercent: number;
   valueCompleted: number;
@@ -94,7 +99,12 @@ export interface ItemFilters {
 }
 
 export interface UpdateProgressPayload {
-  progressPercent: number;
-  status: ItemStatus;
+  progressPercent?: number;
+  status?: ItemStatus;
   remarks?: string;
+  // Tracking quantity fields (optional)
+  deliveredQty?: number;
+  installedQty?: number;
+  testedQty?: number;
+  acceptedQty?: number;
 }

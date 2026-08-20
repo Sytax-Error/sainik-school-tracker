@@ -1,6 +1,7 @@
 import { Card, CardContent } from "./primitives";
 import { formatCurrency, formatPercent } from "@/utils/designTokens";
 import { ProgressBar } from "./primitives";
+import { Link } from "react-router-dom";
 
 interface StatCardProps {
   title: string;
@@ -85,6 +86,7 @@ export function StatCard({
 }
 
 interface PhaseSummaryCardProps {
+  phaseId: string;
   phase: {
     name: string;
     totalValue: number;
@@ -94,6 +96,7 @@ interface PhaseSummaryCardProps {
 }
 
 export function PhaseSummaryCard({
+  phaseId,
   phase,
 }: PhaseSummaryCardProps): JSX.Element {
   const progressColor =
@@ -122,12 +125,17 @@ export function PhaseSummaryCard({
   };
 
   return (
-    <Card
-      variant="default"
-      padding="md"
-      hover
-      className="relative overflow-hidden"
+    <Link
+      to={`/phase/${phaseId}`}
+      aria-label={`Open ${phase.name}`}
+      className="block rounded-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2"
     >
+      <Card
+        variant="default"
+        padding="md"
+        hover
+        className="relative overflow-hidden"
+      >
       <div
         className={`absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-primary-500 to-primary-600`}
       />
@@ -168,6 +176,7 @@ export function PhaseSummaryCard({
           </div>
         </div>
       </CardContent>
-    </Card>
+      </Card>
+    </Link>
   );
 }

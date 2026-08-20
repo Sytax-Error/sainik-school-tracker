@@ -2,7 +2,7 @@ import { useParams } from "react-router-dom";
 import { usePhase, usePhases, useItems } from "@/api/hooks";
 import { ItemTable } from "@/components/ui/ItemTable";
 import { PageHeader } from "@/components/ui/primitives";
-import { useCallback, useMemo, useState, useEffect } from "react";
+import { useCallback, useMemo, useState, useEffect, useRef } from "react";
 import type { ItemFilters } from "@/api/types";
 import { Card } from "@/components/ui/primitives";
 
@@ -24,7 +24,7 @@ export function PhasePage(): JSX.Element {
 
   // Use state for filters so they can be updated by ItemTable
   const [filters, setFilters] = useState<ItemFilters>({
-    phaseId: actualPhaseId || undefined,
+    phaseId: undefined,
     search: "",
     status: undefined,
     page: 1,
@@ -41,15 +41,24 @@ export function PhasePage(): JSX.Element {
     [],
   );
 
-  // Update phaseId in filters when actualPhaseId changes (e.g., after phases load)
+  // Sync phaseId from actualPhaseId when it changes (after phases load)
+  // Using a ref to track previous value to avoid unnecessary updates
+  const prevActualPhaseId = useRef<string | null>(null);
+  const prevFiltersPhaseId = useRef<string | undefined>(undefined);
   useEffect(() => {
-    if (actualPhaseId) {
+    if (prevActualPhaseId.current === actualPhaseId) return;
+    prevActualPhaseId.current = actualPhaseId;
+    if (actualPhaseId && actualPhaseId !== prevFiltersPhaseId.current) {
+      prevFiltersPhaseId.current = actualPhaseId;
       setFilters((prev) => ({ ...prev, phaseId: actualPhaseId, page: 1 }));
     }
   }, [actualPhaseId]);
 
   // Also reset page when URL phaseId changes (for client-side navigation)
+  const prevPhaseId = useRef<string | undefined>(undefined);
   useEffect(() => {
+    if (prevPhaseId.current === phaseId) return;
+    prevPhaseId.current = phaseId;
     setFilters((prev) => ({ ...prev, page: 1 }));
   }, [phaseId]);
 

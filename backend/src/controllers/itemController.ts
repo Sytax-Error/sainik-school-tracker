@@ -62,26 +62,69 @@ export async function updateItemProgress(
   const { id } = itemIdParamSchema.parse(req.params);
   const input = updateProgressSchema.parse(req.body);
 
-  // First get the current item to calculate valueCompleted
+  // First get the current item to calculate valueCompleted and validate quantities
   const currentItem = await Item.findById(id).lean();
   if (!currentItem) {
     throw new NotFoundError("Item not found");
   }
 
+  // Validate that tracking quantities don't exceed sanctioned quantity
+  const sanctionedQty = currentItem.quantity;
+  if (input.deliveredQty !== undefined && input.deliveredQty > sanctionedQty) {
+    throw new Error(`Delivered quantity (${input.deliveredQty}) cannot exceed sanctioned quantity (${sanctionedQty})`);
+  }
+  if (input.installedQty !== undefined && input.installedQty > sanctionedQty) {
+    throw new Error(`Installed quantity (${input.installedQty}) cannot exceed sanctioned quantity (${sanctionedQty})`);
+  }
+  if (input.testedQty !== undefined && input.testedQty > sanctionedQty) {
+    throw new Error(`Tested quantity (${input.testedQty}) cannot exceed sanctioned quantity (${sanctionedQty})`);
+  }
+  if (input.acceptedQty !== undefined && input.acceptedQty > sanctionedQty) {
+    throw new Error(`Accepted quantity (${input.acceptedQty}) cannot exceed sanctioned quantity (${sanctionedQty})`);
+  }
+
+  // Auto-calculate progressPercent based on quantities if not explicitly provided
+  let progressPercent = input.progressPercent;
+  if (progressPercent === undefined) {
+    // Calculate progress based on the highest tracking quantity provided
+    // Priority: accepted > tested > installed > delivered
+    const trackingQty = input.acceptedQty ?? input.testedQty ?? input.installedQty ?? input.deliveredQty ?? 0;
+    if (sanctionedQty > 0) {
+      progressPercent = Math.min(100, Math.round((trackingQty / sanctionedQty) * 100));
+    } else {
+      progressPercent = 0;
+    }
+  }
+
   const valueCompleted = Math.round(
-    (input.progressPercent / 100) * (currentItem.amount || 0),
+    (progressPercent / 100) * (currentItem.amount || 0),
   );
+
+  // Build update object with only provided fields
+  const updateFields: Record<string, unknown> = {
+    progressPercent,
+    valueCompleted,
+  };
+
+  const requestedStatus = input.status ?? currentItem.status;
+  if (requestedStatus === "ON_HOLD" || requestedStatus === "CANCELLED") {
+    updateFields.status = requestedStatus;
+  } else if (progressPercent >= 100) {
+    updateFields.status = "COMPLETED";
+  } else if (progressPercent > 0) {
+    updateFields.status = "IN_PROGRESS";
+  } else {
+    updateFields.status = "NOT_STARTED";
+  }
+  if (input.remarks !== undefined) updateFields.remarks = input.remarks;
+  if (input.deliveredQty !== undefined) updateFields.deliveredQty = input.deliveredQty;
+  if (input.installedQty !== undefined) updateFields.installedQty = input.installedQty;
+  if (input.testedQty !== undefined) updateFields.testedQty = input.testedQty;
+  if (input.acceptedQty !== undefined) updateFields.acceptedQty = input.acceptedQty;
 
   const updatedItem = await Item.findByIdAndUpdate(
     id,
-    {
-      $set: {
-        progressPercent: input.progressPercent,
-        ...(input.status && { status: input.status }),
-        ...(input.remarks && { remarks: input.remarks }),
-        valueCompleted,
-      },
-    },
+    { $set: updateFields },
     { new: true, runValidators: true },
   ).lean();
 

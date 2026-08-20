@@ -1,4 +1,4 @@
-import { useState, useMemo, useCallback, useEffect } from "react";
+import { useState, useMemo, useCallback, useEffect, useRef } from "react";
 import { useDebounce } from "@/hooks";
 import { useUpdateItemProgress } from "@/api/hooks";
 import type {
@@ -18,6 +18,7 @@ import {
   FilterBarSkeleton,
   TableSkeleton,
   EmptyState,
+  ItemEditModal,
 } from "./primitives";
 import { useToastHelpers } from "./Toast";
 
@@ -58,10 +59,7 @@ export function ItemTable({
   error = null,
 }: ItemTableProps): JSX.Element {
   const updateProgress = useUpdateItemProgress();
-  const [editingId, setEditingId] = useState<string | null>(null);
-  const [editProgress, setEditProgress] = useState(0);
-  const [editStatus, setEditStatus] = useState<ItemStatus>("NOT_STARTED");
-  const [editRemarks, setEditRemarks] = useState("");
+  const [editingItem, setEditingItem] = useState<Item | null>(null);
   const [localFilters, setLocalFilters] = useState<ItemFilters>({
     search: "",
     status: undefined,
@@ -75,7 +73,12 @@ export function ItemTable({
   const { success, error: showError } = useToastHelpers();
 
   // Sync localFilters with initialFilters when they change (e.g., page reset from parent)
+  const isInitialMount = useRef(true);
   useEffect(() => {
+    if (isInitialMount.current) {
+      isInitialMount.current = false;
+      return;
+    }
     setLocalFilters((prev) => ({
       ...prev,
       phaseId: initialFilters.phaseId ?? prev.phaseId,
@@ -90,28 +93,31 @@ export function ItemTable({
   const effectiveSearch = debouncedSearch;
 
   const handleEditClick = (item: Item) => {
-    setEditingId(item._id);
-    setEditProgress(item.progressPercent);
-    setEditStatus(item.status);
-    setEditRemarks(item.remarks || "");
+    setEditingItem(item);
   };
 
-  const handleSave = (item: Item) => {
+  const handleSave = (payload: {
+    progressPercent?: number;
+    status?: ItemStatus;
+    remarks?: string;
+    deliveredQty?: number;
+    installedQty?: number;
+    testedQty?: number;
+    acceptedQty?: number;
+  }) => {
+    if (!editingItem) return;
+    
     updateProgress.mutate(
       {
-        id: item._id,
-        payload: {
-          progressPercent: editProgress,
-          status: editStatus,
-          remarks: editRemarks,
-        },
+        id: editingItem._id,
+        payload,
       },
       {
         onSuccess: () => {
-          setEditingId(null);
+          setEditingItem(null);
           success(
             "Item updated",
-            "Progress, status, and remarks have been saved",
+            "Progress, status, quantities, and remarks have been saved",
           );
         },
         onError: (err) => showError("Update failed", err.message),
@@ -119,7 +125,7 @@ export function ItemTable({
     );
   };
 
-  const handleCancel = () => setEditingId(null);
+  const handleCancel = () => setEditingItem(null);
 
   const handleFilterChange = useCallback(
     (key: keyof ItemFilters, value: unknown) => {
@@ -457,76 +463,33 @@ export function ItemTable({
                     {formatCurrency(item.amount)}
                   </td>
                   <td className="px-4 py-3 text-sm">
-                    {editingId === item._id ? (
-                      <Select
-                        value={editStatus}
-                        onChange={(e) =>
-                          setEditStatus(e.target.value as ItemStatus)
-                        }
-                        options={statusOptions}
-                        className="w-full"
-                      />
-                    ) : (
-                      <StatusBadge status={item.status} size="md" />
-                    )}
+                    <StatusBadge status={item.status} size="md" />
                   </td>
                   <td className="px-4 py-3 text-sm">
-                    {editingId === item._id ? (
-                      <Input
-                        type="number"
-                        min={0}
-                        max={100}
-                        value={editProgress}
-                        onChange={(e) =>
-                          setEditProgress(Number(e.target.value))
-                        }
-                        className="w-20"
-                      />
-                    ) : (
-                      <TableProgressBar
-                        value={item.progressPercent}
-                        variant={
-                          item.status === "COMPLETED"
-                            ? "success"
-                            : item.status === "IN_PROGRESS"
-                              ? "info"
-                              : item.status === "ON_HOLD"
-                                ? "warning"
-                                : item.status === "CANCELLED"
-                                  ? "danger"
-                                  : "default"
-                        }
-                      />
-                    )}
+                    <TableProgressBar
+                      value={item.progressPercent}
+                      variant={
+                        item.status === "COMPLETED"
+                          ? "success"
+                          : item.status === "IN_PROGRESS"
+                            ? "info"
+                            : item.status === "ON_HOLD"
+                              ? "warning"
+                              : item.status === "CANCELLED"
+                                ? "danger"
+                                : "default"
+                      }
+                    />
                   </td>
                   <td className="px-4 py-3 text-sm">
-                    {editingId === item._id ? (
-                      <div className="flex gap-2">
-                        <Button
-                          size="sm"
-                          onClick={() => handleSave(item)}
-                          disabled={updateProgress.isPending}
-                          isLoading={updateProgress.isPending}
-                        >
-                          Save
-                        </Button>
-                        <Button
-                          size="sm"
-                          variant="ghost"
-                          onClick={handleCancel}
-                        >
-                          Cancel
-                        </Button>
-                      </div>
-                    ) : (
-                      <Button
-                        size="sm"
-                        variant="ghost"
-                        onClick={() => handleEditClick(item)}
-                      >
-                        Edit
-                      </Button>
-                    )}
+                    <Button
+                      size="sm"
+                      variant="ghost"
+                      onClick={() => handleEditClick(item)}
+                      disabled={updateProgress.isPending}
+                    >
+                      Edit
+                    </Button>
                   </td>
                 </tr>
               ))
@@ -534,6 +497,15 @@ export function ItemTable({
           </tbody>
         </table>
       </div>
+
+      {/* Edit Modal */}
+      <ItemEditModal
+        isOpen={!!editingItem}
+        onClose={handleCancel}
+        item={editingItem}
+        onSave={handleSave}
+        isLoading={updateProgress.isPending}
+      />
 
       {/* Pagination */}
       {pagination.totalPages > 1 && (

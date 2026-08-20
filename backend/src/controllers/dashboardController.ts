@@ -40,7 +40,9 @@ export async function getDashboard(
       0,
     );
     const phaseProgress =
-      phaseValue > 0 ? Math.round((phaseCompleted / phaseValue) * 100) : 0;
+      phaseValue > 0
+        ? Math.round((phaseCompleted / phaseValue) * 10000) / 100
+        : 0;
 
     return {
       phaseId: phase._id,
@@ -64,7 +66,9 @@ export async function getDashboard(
     0,
   );
   const overallProgress =
-    totalValue > 0 ? Math.round((completedValue / totalValue) * 100) : 0;
+    totalValue > 0
+      ? Math.round((completedValue / totalValue) * 10000) / 100
+      : 0;
 
   // Status breakdown using unique items
   const statusCounts = uniqueItems.reduce(
