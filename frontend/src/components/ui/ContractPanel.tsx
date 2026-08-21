@@ -1,5 +1,4 @@
-import { Card } from "./primitives";
-import { ProgressBar } from "./primitives";
+import { Card, ProgressBar, Badge } from "./primitives";
 import { formatCurrency } from "@/utils/designTokens";
 import {
   FileText,
@@ -36,11 +35,11 @@ export interface ContractPanelProps {
   defaultExpanded?: boolean;
 }
 
-const summaryToneStyles = {
-  primary: "bg-primary-50 text-primary-500 border-primary-200",
-  success: "bg-semantic-success-light text-semantic-success-dark border-semantic-success-main/20",
-  warning: "bg-semantic-warning-light text-semantic-warning-dark border-semantic-warning-main/20",
-  info: "bg-semantic-info-light text-semantic-info-dark border-semantic-info-main/20",
+const toneIconStyles = {
+  primary: "text-primary-500 bg-primary-50",
+  success: "text-semantic-success-main bg-semantic-success-light",
+  warning: "text-semantic-warning-main bg-semantic-warning-light",
+  info: "text-semantic-info-main bg-semantic-info-light",
 };
 
 const detailToneStyles = {
@@ -67,16 +66,16 @@ export function ContractPanel({
   const [isExpanded, setIsExpanded] = useState(defaultExpanded);
 
   return (
-    <section className="space-y-6" aria-labelledby="contract-panel-title">
-      {/* Panel Header with Progress Overview */}
-      <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+    <section className="space-y-5" aria-labelledby="contract-panel-title">
+      {/* Panel Header */}
+      <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
         <div className="flex items-start gap-3">
-          <div className="grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-primary-50 text-primary-600">
+          <div className="grid h-11 w-11 shrink-0 place-items-center rounded-xl bg-primary-50 text-primary-500">
             <FileText className="h-5 w-5" aria-hidden="true" />
           </div>
           <div>
-            <p className="text-xs font-semibold uppercase tracking-[0.14em] text-primary-600">GeM Contract</p>
-            <h2 id="contract-panel-title" className="mt-1 text-xl font-bold tracking-[-0.02em] text-text-primary">
+            <p className="text-xs font-semibold uppercase tracking-[0.14em] text-primary-500">GeM Contract</p>
+            <h2 id="contract-panel-title" className="mt-0.5 text-xl font-bold tracking-[-0.02em] text-text-primary">
               Contract Details
             </h2>
             <p className="mt-1 text-sm text-text-secondary">
@@ -84,64 +83,69 @@ export function ContractPanel({
             </p>
           </div>
         </div>
-
-        {/* Contract Health Indicators */}
-        {(contractValue !== undefined || contractProgress !== undefined) && (
-          <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3 sm:gap-6 border-t border-surface-divider pt-4 sm:border-l sm:border-t-0 sm:pl-6 sm:pt-0">
-            {contractValue !== undefined && (
-              <div className="flex items-center gap-3">
-                <div className="grid h-9 w-9 place-items-center rounded-lg bg-semantic-success-light text-semantic-success-main">
-                  <CircleDollarSign className="h-4 w-4" aria-hidden="true" />
-                </div>
-                <div>
-                  <p className="text-xs font-semibold uppercase tracking-[0.1em] text-text-tertiary">
-                    Contract Value
-                  </p>
-                  <p className="text-lg font-bold text-text-primary">
-                    {formatCurrency(contractValue)}
-                  </p>
-                </div>
-              </div>
-            )}
-            {contractProgress !== undefined && (
-              <div className="flex items-center gap-3 min-w-[200px]">
-                <div className="grid h-9 w-9 place-items-center rounded-lg bg-primary-50 text-primary-600">
-                  <Activity className="h-4 w-4" aria-hidden="true" />
-                </div>
-                <div className="flex-1">
-                  <p className="text-xs font-semibold uppercase tracking-[0.1em] text-text-tertiary">
-                    Execution Progress
-                  </p>
-                  <div className="mt-1 flex items-center gap-2">
-                    <ProgressBar
-                      value={contractProgress}
-                      max={100}
-                      variant="default"
-                      size="sm"
-                      className="flex-1"
-                    />
-                    <span className="text-sm font-bold text-primary-600 whitespace-nowrap">
-                      {contractProgress}%
-                    </span>
-                  </div>
-                </div>
-              </div>
-            )}
-          </div>
-        )}
+        <Badge variant="success" size="sm" dot>
+          GeM Active Contract
+        </Badge>
       </div>
 
+      {/* Contract Health Metrics - Card Band */}
+      {(contractValue !== undefined || contractProgress !== undefined) && (
+        <div className="grid grid-cols-1 overflow-hidden rounded-xl border border-surface-border bg-surface-primary shadow-card sm:grid-cols-2">
+          {contractValue !== undefined && (
+            <div className="flex items-center gap-4 border-b border-surface-divider p-5 sm:border-b-0 sm:border-r">
+              <div className="grid h-10 w-10 shrink-0 place-items-center rounded-lg bg-semantic-success-light text-semantic-success-main">
+                <CircleDollarSign className="h-5 w-5" aria-hidden="true" />
+              </div>
+              <div className="min-w-0">
+                <p className="text-xs font-semibold uppercase tracking-[0.1em] text-text-tertiary">
+                  Contract Value
+                </p>
+                <p className="mt-1 text-xl font-bold text-text-primary">
+                  {formatCurrency(contractValue)}
+                </p>
+              </div>
+            </div>
+          )}
+          {contractProgress !== undefined && (
+            <div className="flex items-center gap-4 p-5">
+              <div className="grid h-10 w-10 shrink-0 place-items-center rounded-lg bg-primary-50 text-primary-500">
+                <Activity className="h-5 w-5" aria-hidden="true" />
+              </div>
+              <div className="min-w-0 flex-1">
+                <p className="text-xs font-semibold uppercase tracking-[0.1em] text-text-tertiary">
+                  Execution Progress
+                </p>
+                <div className="mt-2 flex items-center gap-3">
+                  <ProgressBar
+                    value={contractProgress}
+                    max={100}
+                    variant="default"
+                    size="sm"
+                    className="flex-1"
+                  />
+                  <span className="text-lg font-bold text-primary-500 whitespace-nowrap">
+                    {contractProgress}%
+                  </span>
+                </div>
+              </div>
+            </div>
+          )}
+        </div>
+      )}
+
       {/* Summary Cards Grid */}
-      <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+      <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-4">
         {summary.map((item) => (
           <div
             key={item.label}
-            className={`contract-summary-card rounded-xl border p-4 transition-all duration-200 hover:shadow-cardHover ${
-              summaryToneStyles[item.tone || "primary"]
-            }`}
+            className="rounded-xl border border-surface-divider bg-surface-primary p-4 transition-all duration-200 hover:border-primary-300/60 hover:shadow-cardHover"
           >
             <div className="flex items-start gap-3">
-              <div className="grid h-9 w-9 shrink-0 place-items-center rounded-lg">
+              <div
+                className={`grid h-9 w-9 shrink-0 place-items-center rounded-lg ${
+                  toneIconStyles[item.tone || "primary"]
+                }`}
+              >
                 {item.icon}
               </div>
               <div className="min-w-0 flex-1">
@@ -159,19 +163,19 @@ export function ContractPanel({
 
       {/* Expandable Details Section - Inside a Card */}
       <Card variant="outlined" padding="none" className="overflow-hidden">
-        <div className="p-4 border-b border-surface-border bg-surface-secondary">
+        <div className="border-b border-surface-divider bg-surface-secondary/60">
           <button
             type="button"
-            className="flex items-center justify-between w-full cursor-pointer select-none p-2 rounded-lg hover:bg-surface-tertiary transition-colors"
+            className="flex w-full cursor-pointer select-none items-center justify-between gap-4 px-5 py-4 transition-colors hover:bg-surface-tertiary/60"
             onClick={() => setIsExpanded(!isExpanded)}
             aria-expanded={isExpanded}
             aria-controls="contract-details-content"
           >
             <div className="flex items-center gap-3">
-              <div className="grid h-9 w-9 place-items-center rounded-lg bg-primary-50 text-primary-600">
+              <div className="grid h-9 w-9 place-items-center rounded-lg bg-primary-50 text-primary-500">
                 <Activity className="h-4 w-4" aria-hidden="true" />
               </div>
-              <div>
+              <div className="text-left">
                 <p className="text-sm font-semibold text-text-primary">Contract Details</p>
                 <p className="text-xs text-text-tertiary">
                   {details.length} sections · Click to {isExpanded ? "collapse" : "expand"}
@@ -203,9 +207,11 @@ export function ContractPanel({
                   }`}
                 >
                   <h3 className="flex items-center gap-2 text-sm font-semibold text-text-primary">
-                    <div className={`grid h-8 w-8 place-items-center rounded-lg ${
-                      detailIconStyles[group.tone || "primary"]
-                    }`}>
+                    <div
+                      className={`grid h-8 w-8 place-items-center rounded-lg ${
+                        detailIconStyles[group.tone || "primary"]
+                      }`}
+                    >
                       {group.icon}
                     </div>
                     {group.group}

@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { Activity, Boxes, LayoutDashboard, Menu, X } from "lucide-react";
+import { Activity, Boxes, FileText, LayoutDashboard, Menu, X } from "lucide-react";
 
 interface MainLayoutProps {
   children: React.ReactNode;
@@ -12,9 +12,13 @@ export function MainLayout({ children }: MainLayoutProps): JSX.Element {
 
   const navItems = [
     { path: "/", label: "Dashboard", icon: LayoutDashboard },
+    { path: "/contract", label: "Contract", icon: FileText },
     { path: "/phase/1", label: "Phase 1", icon: Boxes },
     { path: "/phase/2", label: "Phase 2", icon: Boxes },
   ];
+
+  const currentNavItem = navItems.find((item) => item.path === location.pathname);
+  const headerLabel = currentNavItem?.label ?? "Project control center";
 
   return (
     <div className="min-h-screen bg-surface-page lg:flex">
@@ -58,7 +62,7 @@ export function MainLayout({ children }: MainLayoutProps): JSX.Element {
               <span className="brand-mark" aria-hidden="true">S</span>
               <span className="text-sm font-semibold text-white">Sainik School</span>
             </Link>
-            <p className="hidden text-sm font-medium text-white/60 lg:block">Project control center</p>
+            <p className="hidden text-sm font-medium text-white/60 lg:block">{headerLabel}</p>
             <button
               type="button"
               className="mobile-nav-toggle lg:hidden"
