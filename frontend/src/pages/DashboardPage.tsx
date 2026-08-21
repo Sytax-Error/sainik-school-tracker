@@ -70,9 +70,15 @@ export function DashboardPage(): JSX.Element {
 
   return (
     <div className="space-y-9">
-      <section aria-labelledby="key-metrics-title">
-        <div className="mb-4 px-1">
-          <h2 id="key-metrics-title" className="text-xl font-bold tracking-[-0.02em] text-text-primary">Key metrics</h2>
+      <section aria-labelledby="key-metrics-title" className="mb-9">
+        <div className="mb-4 flex items-center gap-3 px-1">
+          <span className="grid h-9 w-9 place-items-center rounded-lg bg-primary-100 text-primary-600">
+            <Gauge className="h-4 w-4" aria-hidden="true" />
+          </span>
+          <div>
+            <p className="text-xs font-semibold uppercase tracking-[0.14em] text-text-tertiary">Overview</p>
+            <h2 id="key-metrics-title" className="mt-1 text-xl font-bold tracking-[-0.02em] text-text-primary">Key metrics</h2>
+          </div>
         </div>
         <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
           <StatCard
