@@ -21,7 +21,7 @@ const variantStyles = {
   },
   primary: {
     bg: "bg-primary-50",
-    text: "text-primary-700",
+    text: "text-primary-500",
     dot: "bg-primary-500",
     border: "border-primary-200",
   },

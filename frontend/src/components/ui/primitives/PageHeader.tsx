@@ -70,7 +70,7 @@ export const PageHeader = forwardRef<HTMLDivElement, PageHeaderProps>(
                 {item.href ? (
                   <Link
                     to={item.href}
-                    className="transition-colors hover:text-primary-700"
+                    className="transition-colors hover:text-primary-500"
                   >
                     {item.label}
                   </Link>
@@ -88,7 +88,7 @@ export const PageHeader = forwardRef<HTMLDivElement, PageHeaderProps>(
         )}
         <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4 relative z-10">
           <div>
-            <h1 className="text-3xl font-bold tracking-[-0.03em] text-primary-900">{title}</h1>
+            <h1 className="text-3xl font-bold tracking-[-0.03em] text-text-primary">{title}</h1>
             {description && (
               <p className="mt-2 text-sm text-text-secondary">{description}</p>
             )}

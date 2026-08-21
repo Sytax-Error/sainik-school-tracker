@@ -31,7 +31,7 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
       outline:
         "bg-transparent text-primary-600 border border-primary-600 hover:bg-primary-50 focus-visible:ring-primary-500 active:bg-primary-100",
       ghost:
-        "bg-transparent text-text-secondary hover:bg-primary-50 hover:text-primary-700 focus-visible:ring-primary-500 active:bg-primary-100",
+        "bg-transparent text-text-secondary hover:bg-primary-50 hover:text-primary-500 focus-visible:ring-primary-500 active:bg-primary-100",
       danger:
         "bg-semantic-danger-main text-white hover:bg-semantic-danger-dark focus-visible:ring-semantic-danger-main active:bg-semantic-danger-dark shadow-sm hover:shadow-cardHover",
     };

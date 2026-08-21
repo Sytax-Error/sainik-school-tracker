@@ -131,6 +131,32 @@ For every implementation phase:
 
 Do not ask questions when a safe project decision is already documented. Do not silently change the selected stack.
 
+## Development Environment
+
+**Always use Docker for development** - this ensures consistent environments across team members and matches production.
+
+```bash
+# Start full development stack with hot reload
+docker-compose -f docker-compose.dev.yml up --build
+
+# Stop the stack
+docker-compose -f docker-compose.dev.yml down
+
+# View logs
+docker-compose -f docker-compose.dev.yml logs -f
+
+# Rebuild a specific service
+docker-compose -f docker-compose.dev.yml build frontend
+docker-compose -f docker-compose.dev.yml build backend
+```
+
+The development stack includes:
+- **Frontend** (Vite + React): http://localhost:5174 with hot module replacement
+- **Backend** (Express + TypeScript): http://localhost:5001 with tsx watch mode
+- **MongoDB**: localhost:27018 (persisted in docker volume)
+
+Source code is mounted as volumes for instant hot reload - no rebuild needed for code changes.
+
 ## General coding standards
 
 - Use TypeScript for all application files.
@@ -435,7 +461,18 @@ npm run typecheck
 npm run build
 ```
 
-For local development:
+For local development (using Docker - preferred):
+
+```bash
+docker-compose -f docker-compose.dev.yml up --build
+```
+
+This starts the full development stack with hot reload:
+- Frontend: http://localhost:5174
+- Backend API: http://localhost:5001
+- MongoDB: localhost:27018
+
+For local development (without Docker):
 
 ```bash
 npm run dev

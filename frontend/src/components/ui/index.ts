@@ -46,6 +46,16 @@ export {
   type CardProps,
 } from "./primitives/Card";
 export {
+  ContractPanel,
+  sainikSchoolContractSummary,
+  sainikSchoolContractDetails,
+} from "./ContractPanel";
+export type {
+  ContractPanelProps,
+  ContractSummaryItem,
+  ContractDetailGroup,
+} from "./ContractPanel";
+export {
   Badge,
   StatusBadge,
   type BadgeProps,

@@ -259,7 +259,7 @@ export function ItemTable({
       <div className="flex items-center justify-between border-b border-surface-divider px-4 py-3 sm:px-5">
         <div className="flex items-center gap-2">
           <ListFilter className="h-4 w-4 text-primary-400" aria-hidden="true" />
-          <span className="text-sm font-semibold text-primary-900">Item register</span>
+          <span className="text-sm font-semibold text-text-primary">Item register</span>
         </div>
         <span className="text-xs text-text-tertiary">Search, filter, and update records</span>
       </div>
@@ -453,7 +453,7 @@ export function ItemTable({
                   key={item._id}
                   className="transition-colors duration-150 hover:bg-primary-50/50"
                 >
-                  <td className="px-4 py-4 text-sm font-semibold text-primary-900">
+                  <td className="px-4 py-4 text-sm font-semibold text-text-primary">
                     <div className="flex min-w-[220px] items-center gap-3">
                       <span className="grid h-8 w-8 shrink-0 place-items-center rounded-lg bg-primary-100 text-xs font-bold text-primary-500" aria-hidden="true">{item.name.charAt(0).toUpperCase()}</span>
                       <span>{item.name}</span>

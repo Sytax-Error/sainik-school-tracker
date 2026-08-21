@@ -78,7 +78,7 @@ export function MainLayout({ children }: MainLayoutProps): JSX.Element {
                     key={item.path}
                     to={item.path}
                     onClick={() => setMobileNavigationOpen(false)}
-                    className={`rounded-lg px-2 py-2 text-center text-xs font-semibold ${location.pathname === item.path ? "bg-white text-primary-700" : "text-white/65 hover:bg-white/10 hover:text-white"}`}
+                    className={`rounded-lg px-2 py-2 text-center text-xs font-semibold ${location.pathname === item.path ? "bg-primary-600 text-white" : "text-white/65 hover:bg-white/10 hover:text-white"}`}
                   >
                     {item.label}
                   </Link>

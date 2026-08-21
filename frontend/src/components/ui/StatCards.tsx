@@ -39,7 +39,7 @@ export function StatCard({
   };
 
   const accentTextStyles = {
-    primary: "text-primary-700",
+    primary: "text-primary-500",
     success: "text-semantic-success-dark",
     warning: "text-semantic-warning-dark",
     danger: "text-semantic-danger-dark",
@@ -65,7 +65,7 @@ export function StatCard({
             {icon || <span className="h-2.5 w-2.5 rounded-full bg-current" aria-hidden="true" />}
           </div>
         </div>
-        <p className="mt-6 whitespace-nowrap text-xl font-bold leading-tight tracking-[-0.03em] text-primary-900 sm:text-2xl">
+        <p className="mt-6 whitespace-nowrap text-xl font-bold leading-tight tracking-[-0.03em] text-text-primary sm:text-2xl">
           {displayValue}
         </p>
         {trend && (
@@ -150,7 +150,7 @@ export function PhaseSummaryCard({
                 </span>
                 Phase overview
               </div>
-              <h3 className="mt-3 text-xl font-bold tracking-[-0.03em] text-primary-900">{phase.name}</h3>
+              <h3 className="mt-3 text-xl font-bold tracking-[-0.03em] text-text-primary">{phase.name}</h3>
             </div>
             <div className="flex items-center gap-2">
               <Badge variant={isComplete ? "success" : isActive ? "info" : "neutral"} size="sm" dot>
@@ -165,14 +165,14 @@ export function PhaseSummaryCard({
                 <CircleDollarSign className="h-4 w-4 text-primary-400" aria-hidden="true" />
                 Sanctioned value
               </div>
-              <p className="mt-2 text-base font-bold text-primary-900">{formatCurrency(phase.totalValue)}</p>
+              <p className="mt-2 text-base font-bold text-text-primary">{formatCurrency(phase.totalValue)}</p>
             </div>
             <div className="rounded-xl bg-surface-secondary p-4">
               <div className="flex items-center gap-2 text-xs text-text-tertiary">
                 <ClipboardList className="h-4 w-4 text-primary-400" aria-hidden="true" />
                 Items tracked
               </div>
-              <p className="mt-2 text-base font-bold text-primary-900">{phase.itemCount}</p>
+              <p className="mt-2 text-base font-bold text-text-primary">{phase.itemCount}</p>
             </div>
           </div>
           <div className="mt-6 rounded-xl border border-surface-divider bg-surface-secondary/60 p-4">
