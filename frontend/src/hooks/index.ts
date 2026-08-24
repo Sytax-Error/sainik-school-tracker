@@ -5,3 +5,4 @@ export {
   useIsTablet,
   useIsDesktop,
 } from "./useMediaQuery";
+export { useTheme, ThemeProvider, type Theme } from "./useTheme";

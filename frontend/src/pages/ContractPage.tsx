@@ -5,7 +5,6 @@ import {
   ProgressBar,
 } from "@/components/ui/primitives";
 import { formatCurrency } from "@/utils/designTokens";
-import { Link } from "react-router-dom";
 import { useState } from "react";
 import {
   FileText,
@@ -16,7 +15,6 @@ import {
   UserRound,
   CircleDollarSign,
   ChevronDown,
-  ArrowLeft,
   Landmark,
   ShieldCheck,
   UserRoundCheck,

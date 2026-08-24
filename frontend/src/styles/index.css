@@ -1,6 +1,6 @@
 /**
  * Global Styles - Base layer, utilities, component styles
- * 
+ *
  * Related Documentation:
  * - UI_DESIGN_SYSTEM.md: Complete design system specifications
  * - UI_IMPROVEMENT_PLAN.md: Strategic improvement plan
@@ -8,11 +8,144 @@
  * - src/utils/designTokens.ts: Single source of truth for tokens
  * - tailwind.config.js: Tailwind theme configuration
  * - src/components/ui/primitives/: Reusable UI components
+ *
+ * Theme system:
+ * - CSS variables are defined on :root (light) and .dark (dark)
+ * - All colors use rgb() format so opacity modifiers work (e.g. /50)
+ * - Shadows are also theme-aware via CSS variables
+ * - Theme is toggled by adding/removing the .dark class on <html>
  */
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* ==========================================================================
+   Theme CSS Variables
+   ========================================================================== */
+
+:root {
+  /* Light theme — surface colors */
+  --color-surface-page: 248 250 252;
+  --color-surface-primary: 255 255 255;
+  --color-surface-secondary: 241 245 249;
+  --color-surface-tertiary: 226 232 240;
+  --color-surface-border: 203 213 225;
+  --color-surface-divider: 226 232 240;
+
+  /* Light theme — text colors */
+  --color-text-primary: 15 23 42;
+  --color-text-secondary: 71 85 105;
+  --color-text-tertiary: 100 116 139;
+  --color-text-inverse: 248 250 252;
+  --color-text-link: 59 130 246;
+
+  /* Light theme — primary (brand) colors */
+  --color-primary-50: 239 246 255;
+  --color-primary-100: 219 233 254;
+  --color-primary-200: 191 219 254;
+  --color-primary-300: 147 197 253;
+  --color-primary-400: 96 165 250;
+  --color-primary-500: 59 130 246;
+  --color-primary-600: 37 99 235;
+  --color-primary-700: 29 78 216;
+  --color-primary-800: 30 64 175;
+  --color-primary-900: 30 58 165;
+
+  /* Light theme — semantic colors */
+  --color-semantic-success-light: 220 252 231;
+  --color-semantic-success-main: 22 163 74;
+  --color-semantic-success-dark: 74 222 128;
+  --color-semantic-warning-light: 254 249 195;
+  --color-semantic-warning-main: 202 138 4;
+  --color-semantic-warning-dark: 250 204 21;
+  --color-semantic-danger-light: 254 226 226;
+  --color-semantic-danger-main: 220 38 38;
+  --color-semantic-danger-dark: 239 68 68;
+  --color-semantic-info-light: 219 233 254;
+  --color-semantic-info-main: 37 99 235;
+  --color-semantic-info-dark: 96 165 250;
+
+  /* Light theme — shadows */
+  --shadow-card: 0 8px 24px rgb(0 0 0 / 0.08);
+  --shadow-card-hover: 0 14px 32px rgb(0 0 0 / 0.12);
+  --shadow-dropdown: 0 12px 28px rgb(0 0 0 / 0.15);
+  --shadow-modal: 0 24px 60px rgb(0 0 0 / 0.25);
+  --shadow-header: 0 10px 24px rgb(0 0 0 / 0.06);
+  --shadow-sidebar: 10px 0 26px rgb(0 0 0 / 0.04);
+
+  /* Light theme — component-specific */
+  --color-sidebar-hover-bg: rgba(0, 0, 0, 0.04);
+  --color-brand-mark: #1fa774;
+  --color-sidebar-active-bg: #2f855a;
+  --color-focus-ring: rgb(var(--color-primary-500));
+  --color-focus-ring-offset: rgb(var(--color-surface-page));
+}
+
+.dark {
+  /* Dark theme — surface colors */
+  --color-surface-page: 11 18 32;
+  --color-surface-primary: 17 26 42;
+  --color-surface-secondary: 23 34 53;
+  --color-surface-tertiary: 32 46 67;
+  --color-surface-border: 42 58 82;
+  --color-surface-divider: 34 49 73;
+
+  /* Dark theme — text colors */
+  --color-text-primary: 243 247 252;
+  --color-text-secondary: 170 184 203;
+  --color-text-tertiary: 113 129 152;
+  --color-text-inverse: 11 18 32;
+  --color-text-link: 156 195 255;
+
+  /* Dark theme — primary (brand) colors */
+  --color-primary-50: 17 28 45;
+  --color-primary-100: 23 38 59;
+  --color-primary-200: 32 52 81;
+  --color-primary-300: 48 74 112;
+  --color-primary-400: 71 106 157;
+  --color-primary-500: 109 159 248;
+  --color-primary-600: 77 127 216;
+  --color-primary-700: 63 103 174;
+  --color-primary-800: 49 79 135;
+  --color-primary-900: 237 244 255;
+
+  /* Dark theme — semantic colors */
+  --color-semantic-success-light: 18 59 42;
+  --color-semantic-success-main: 52 211 153;
+  --color-semantic-success-dark: 167 243 208;
+  --color-semantic-warning-light: 58 43 18;
+  --color-semantic-warning-main: 251 191 36;
+  --color-semantic-warning-dark: 253 234 138;
+  --color-semantic-danger-light: 58 24 32;
+  --color-semantic-danger-main: 251 113 133;
+  --color-semantic-danger-dark: 254 205 211;
+  --color-semantic-info-light: 18 44 79;
+  --color-semantic-info-main: 96 165 250;
+  --color-semantic-info-dark: 191 219 254;
+
+  /* Dark theme — shadows */
+  --shadow-card: 0 8px 24px rgb(0 0 0 / 0.18);
+  --shadow-card-hover: 0 14px 32px rgb(0 0 0 / 0.28);
+  --shadow-dropdown: 0 12px 28px rgb(0 0 0 / 0.3);
+  --shadow-modal: 0 24px 60px rgb(0 0 0 / 0.45);
+  --shadow-header: 0 10px 24px rgb(0 0 0 / 0.25);
+  --shadow-sidebar: 10px 0 26px rgb(20 39 63 / 0.08);
+
+  /* Dark theme — component-specific */
+  --color-sidebar-hover-bg: rgba(255, 255, 255, 0.08);
+  --color-brand-mark: #1fa774;
+  --color-sidebar-active-bg: #2f855a;
+  --color-focus-ring: rgb(var(--color-primary-500));
+  --color-focus-ring-offset: rgb(var(--color-surface-page));
+}
+
+/* Smooth theme transitions (respects reduced-motion preference) */
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    transition: background-color 0.2s ease, color 0.2s ease;
+  }
+}
 
 @layer base {
   * {
@@ -27,8 +160,8 @@
 
   body {
     margin: 0;
-      background-color: #0b1220;
-      color: #f3f7fc;
+    background-color: rgb(var(--color-surface-page));
+    color: rgb(var(--color-text-primary));
     font-size: 1rem;
     line-height: 1.5;
   }
@@ -51,20 +184,20 @@
   input:focus-visible,
   select:focus-visible,
   textarea:focus-visible {
-      ring-color: #6d9ff8;
-      ring-offset-color: #0b1220;
+    ring-color: var(--color-focus-ring);
+    ring-offset-color: var(--color-focus-ring-offset);
   }
 
   /* Selection styles */
   ::selection {
-      background-color: #203451;
-      color: #edf4ff;
+    background-color: rgb(var(--color-primary-200));
+    color: rgb(var(--color-primary-900));
   }
 
   /* Scrollbar styles */
   * {
     scrollbar-width: thin;
-      scrollbar-color: #304a70 transparent;
+    scrollbar-color: rgb(var(--color-primary-300)) transparent;
   }
 
   *::-webkit-scrollbar {
@@ -77,14 +210,14 @@
   }
 
   *::-webkit-scrollbar-thumb {
-      background-color: #304a70;
+    background-color: rgb(var(--color-primary-300));
     border-radius: 4px;
     border: 2px solid transparent;
     background-clip: content-box;
   }
 
   *::-webkit-scrollbar-thumb:hover {
-      background-color: #476a9d;
+    background-color: rgb(var(--color-primary-400));
   }
 }
 
@@ -123,14 +256,14 @@
   }
 
   .app-header {
-      background: #0f1b2d;
-      box-shadow: 0 10px 24px rgb(0 0 0 / 0.25);
+    background: rgb(var(--color-surface-primary));
+    box-shadow: var(--shadow-header);
   }
 
   .app-sidebar {
     min-height: 100vh;
-    background: #14273f;
-    box-shadow: 10px 0 26px rgb(20 39 63 / 0.08);
+    background: rgb(var(--color-surface-primary));
+    box-shadow: var(--shadow-sidebar);
   }
 
   .brand-mark {
@@ -140,7 +273,7 @@
     place-items: center;
     border: 1px solid rgb(255 255 255 / 0.18);
     border-radius: 10px;
-      background: #1fa774;
+    background: var(--color-brand-mark);
     color: white;
     font-size: 1rem;
     font-weight: 700;
@@ -152,19 +285,19 @@
     gap: 0.75rem;
     border-radius: 10px;
     padding: 0.7rem 0.75rem;
-    color: rgb(255 255 255 / 0.58);
+    color: rgb(var(--color-text-secondary));
     font-size: 0.875rem;
     font-weight: 600;
     transition: background-color 150ms ease, color 150ms ease;
   }
 
   .sidebar-link:hover {
-    background: rgb(255 255 255 / 0.08);
-    color: white;
+    background: var(--color-sidebar-hover-bg);
+    color: rgb(var(--color-text-primary));
   }
 
   .sidebar-link-active {
-    background: #2f855a;
+    background: var(--color-sidebar-active-bg);
     color: white;
     box-shadow: 0 7px 16px rgb(0 0 0 / 0.14);
   }
@@ -178,28 +311,28 @@
   }
 
   .mobile-nav-toggle {
-    border: 1px solid rgb(255 255 255 / 0.16);
+    border: 1px solid rgb(var(--color-surface-border));
     border-radius: 8px;
     padding: 0.4rem 0.7rem;
-    color: rgb(255 255 255 / 0.8);
+    color: rgb(var(--color-text-primary));
     font-size: 0.75rem;
     font-weight: 600;
   }
 
   .dashboard-status-strip {
     padding: 1.25rem 1.5rem;
-    border: 1px solid #203451;
+    border: 1px solid rgb(var(--color-surface-border));
     border-radius: 1rem;
-    background: #111c2d;
-    box-shadow: 0 8px 22px rgb(0 0 0 / 0.16);
+    background: rgb(var(--color-surface-secondary));
+    box-shadow: var(--shadow-card);
   }
 
   .contract-panel {
     padding: 1.5rem;
-    border: 1px solid #203451;
+    border: 1px solid rgb(var(--color-surface-border));
     border-radius: 1rem;
-    background: #111c2d;
-    box-shadow: 0 8px 22px rgb(0 0 0 / 0.16);
+    background: rgb(var(--color-surface-secondary));
+    box-shadow: var(--shadow-card);
   }
 
   .contract-summary-cell {
@@ -207,18 +340,18 @@
     min-width: 0;
     align-items: center;
     gap: 0.75rem;
-    border: 1px solid #203451;
+    border: 1px solid rgb(var(--color-surface-border));
     border-radius: 0.75rem;
     padding: 0.75rem;
-    background: #172235;
+    background: rgb(var(--color-surface-tertiary));
   }
 
   .contract-details summary {
     cursor: pointer;
-    border: 1px solid #304a70;
+    border: 1px solid rgb(var(--color-primary-300));
     border-radius: 0.6rem;
     padding: 0.55rem 0.75rem;
-    color: #9fc3ff;
+    color: rgb(var(--color-text-link));
     font-size: 0.75rem;
     font-weight: 600;
     list-style: none;
@@ -229,7 +362,7 @@
   }
 
   .contract-details summary:hover {
-    background: #17263b;
+    background: rgb(var(--color-primary-100));
   }
 
   /* Utility for visually hidden content (screen readers only) */
@@ -251,11 +384,11 @@
   }
 
   .table-workspace {
-    box-shadow: 0 14px 32px rgb(0 0 0 / 0.2);
+    box-shadow: var(--shadow-card-hover);
   }
 
   .table-toolbar {
-    background: #141f31;
+    background: rgb(var(--color-surface-secondary));
   }
 
   .table {

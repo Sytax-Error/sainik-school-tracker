@@ -72,6 +72,66 @@ export const colors = {
   },
 } as const;
 
+/**
+ * Light theme color tokens.
+ * These are the inverse of the dark theme tokens, providing a clean
+ * light-on-dark → dark-on-light color scheme.
+ */
+export const lightColors = {
+  primary: {
+    50: "#eff6ff",
+    100: "#dbeafe",
+    200: "#bfdbfe",
+    300: "#93c5fd",
+    400: "#60a5fa",
+    500: "#3b82f6",
+    600: "#2563eb",
+    700: "#1d4ed8",
+    800: "#1e40af",
+    900: "#1e3a8a",
+  },
+
+  semantic: {
+    success: {
+      light: "#dcfce7",
+      main: "#16a34a",
+      dark: "#4ade80",
+    },
+    warning: {
+      light: "#fef9c3",
+      main: "#ca8a04",
+      dark: "#facc15",
+    },
+    danger: {
+      light: "#fee2e2",
+      main: "#dc2626",
+      dark: "#ef4444",
+    },
+    info: {
+      light: "#dbeafe",
+      main: "#2563eb",
+      dark: "#60a5fa",
+    },
+  },
+
+  surface: {
+    page: "#f8fafc",
+    primary: "#ffffff",
+    secondary: "#f1f5f9",
+    tertiary: "#e2e8f0",
+    border: "#cbd5e1",
+    divider: "#e2e8f0",
+  },
+
+  text: {
+    primary: "#0f172a",
+    secondary: "#475569",
+    tertiary: "#64748b",
+    inverse: "#f8fafc",
+    link: "#3b82f6",
+  },
+} as const;
+
 export const spacing = {
   1: "0.25rem", // 4px
   2: "0.5rem", // 8px
@@ -133,6 +193,13 @@ export const shadows = {
   cardHover: "0 14px 32px rgb(0 0 0 / 0.28)",
   dropdown: "0 12px 28px rgb(0 0 0 / 0.3)",
   modal: "0 24px 60px rgb(0 0 0 / 0.45)",
+} as const;
+
+export const lightShadows = {
+  card: "0 8px 24px rgb(0 0 0 / 0.08)",
+  cardHover: "0 14px 32px rgb(0 0 0 / 0.12)",
+  dropdown: "0 12px 28px rgb(0 0 0 / 0.15)",
+  modal: "0 24px 60px rgb(0 0 0 / 0.25)",
 } as const;
 
 export const transitions = {

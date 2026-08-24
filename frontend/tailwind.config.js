@@ -6,13 +6,20 @@
  * - UI_IMPROVEMENT_PLAN.md: Strategic improvement plan
  * - UI_COLOR_QUICK_REF.md: Quick reference for daily development
  * - src/utils/designTokens.ts: Single source of truth for tokens
- * - src/styles/index.css: Global base styles
+ * - src/styles/index.css: Global base styles (defines CSS variables)
  * - src/components/ui/primitives/: Reusable UI components
  *
  * When modifying colors/spacing/typography:
  * 1. Update src/utils/designTokens.ts first
  * 2. Update this file to match
  * 3. Update UI_DESIGN_SYSTEM.md documentation
+ *
+ * Theme system:
+ * - Colors are defined as CSS variables in src/styles/index.css
+ * - :root defines light theme variables
+ * - .dark defines dark theme variables
+ * - This file maps Tailwind color names to those CSS variables
+ * - Toggling the .dark class on <html> switches themes
  */
 
 /** @type {import('tailwindcss').Config} */
@@ -22,53 +29,53 @@ export default {
     extend: {
       colors: {
         primary: {
-          50: "#111c2d",
-          100: "#17263b",
-          200: "#203451",
-          300: "#304a70",
-          400: "#476a9d",
-          500: "#6d9ff8",
-          600: "#4d7fd8",
-          700: "#3f67ae",
-          800: "#314f87",
-          900: "#edf4ff",
+          50: "rgb(var(--color-primary-50))",
+          100: "rgb(var(--color-primary-100))",
+          200: "rgb(var(--color-primary-200))",
+          300: "rgb(var(--color-primary-300))",
+          400: "rgb(var(--color-primary-400))",
+          500: "rgb(var(--color-primary-500))",
+          600: "rgb(var(--color-primary-600))",
+          700: "rgb(var(--color-primary-700))",
+          800: "rgb(var(--color-primary-800))",
+          900: "rgb(var(--color-primary-900))",
         },
         semantic: {
           success: {
-            light: "#123b2a",
-            main: "#34d399",
-            dark: "#a7f3d0",
+            light: "rgb(var(--color-semantic-success-light))",
+            main: "rgb(var(--color-semantic-success-main))",
+            dark: "rgb(var(--color-semantic-success-dark))",
           },
           warning: {
-            light: "#3a2b12",
-            main: "#fbbf24",
-            dark: "#fde68a",
+            light: "rgb(var(--color-semantic-warning-light))",
+            main: "rgb(var(--color-semantic-warning-main))",
+            dark: "rgb(var(--color-semantic-warning-dark))",
           },
           danger: {
-            light: "#3a1820",
-            main: "#fb7185",
-            dark: "#fecdd3",
+            light: "rgb(var(--color-semantic-danger-light))",
+            main: "rgb(var(--color-semantic-danger-main))",
+            dark: "rgb(var(--color-semantic-danger-dark))",
           },
           info: {
-            light: "#122c4f",
-            main: "#60a5fa",
-            dark: "#bfdbfe",
+            light: "rgb(var(--color-semantic-info-light))",
+            main: "rgb(var(--color-semantic-info-main))",
+            dark: "rgb(var(--color-semantic-info-dark))",
           },
         },
         surface: {
-          page: "#0b1220",
-          primary: "#111a2a",
-          secondary: "#172235",
-          tertiary: "#202e43",
-          border: "#2a3a52",
-          divider: "#223149",
+          page: "rgb(var(--color-surface-page))",
+          primary: "rgb(var(--color-surface-primary))",
+          secondary: "rgb(var(--color-surface-secondary))",
+          tertiary: "rgb(var(--color-surface-tertiary))",
+          border: "rgb(var(--color-surface-border))",
+          divider: "rgb(var(--color-surface-divider))",
         },
         text: {
-          primary: "#f3f7fc",
-          secondary: "#aab8cb",
-          tertiary: "#718198",
-          inverse: "#0b1220",
-          link: "#9fc3ff",
+          primary: "rgb(var(--color-text-primary))",
+          secondary: "rgb(var(--color-text-secondary))",
+          tertiary: "rgb(var(--color-text-tertiary))",
+          inverse: "rgb(var(--color-text-inverse))",
+          link: "rgb(var(--color-text-link))",
         },
       },
       fontFamily: {
@@ -96,10 +103,10 @@ export default {
         lg: "12px",
       },
       boxShadow: {
-        card: "0 8px 24px rgb(0 0 0 / 0.18)",
-        cardHover: "0 14px 32px rgb(0 0 0 / 0.28)",
-        dropdown: "0 12px 28px rgb(0 0 0 / 0.3)",
-        modal: "0 24px 60px rgb(0 0 0 / 0.45)",
+        card: "var(--shadow-card)",
+        cardHover: "var(--shadow-card-hover)",
+        dropdown: "var(--shadow-dropdown)",
+        modal: "var(--shadow-modal)",
       },
       spacing: {
         1: "0.25rem",

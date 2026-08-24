@@ -63,3 +63,4 @@ export {
 } from "./primitives/Badge";
 export { EmptyState, type EmptyStateProps } from "./primitives/EmptyState";
 export { PageHeader, type PageHeaderProps } from "./primitives/PageHeader";
+export { ThemeToggle, type ThemeToggleProps } from "./ThemeToggle";
