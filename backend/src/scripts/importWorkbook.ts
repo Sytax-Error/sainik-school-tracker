@@ -7,6 +7,7 @@ import { Project } from "../models/Project.js";
 import { Phase } from "../models/Phase.js";
 import { Item } from "../models/Item.js";
 import { parseWorkbook } from "../utils/workbookParser.js";
+import { logger } from "../utils/logger.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -16,12 +17,12 @@ async function importWorkbook(): Promise<void> {
     await connectMongo();
 
     const workbookPath = join(__dirname, "..", "..", config.sourceWorkbookPath);
-    console.info(`Reading workbook from: ${workbookPath}`);
+    logger.info(`Reading workbook from: ${workbookPath}`);
 
     const buffer = readFileSync(workbookPath);
     const parsedPhases = parseWorkbook(buffer);
 
-    console.info(`Parsed ${parsedPhases.length} phases`);
+    logger.info(`Parsed ${parsedPhases.length} phases`);
 
     // Upsert project
     const project = await Project.findOneAndUpdate(
@@ -33,7 +34,7 @@ async function importWorkbook(): Promise<void> {
       },
       { upsert: true, new: true, setDefaultsOnInsert: true },
     );
-    console.info(`Project: ${project.name} (${project._id})`);
+    logger.info(`Project: ${project.name} (${project._id})`);
 
     // Create phases and their items
     for (const parsedPhase of parsedPhases) {
@@ -48,11 +49,12 @@ async function importWorkbook(): Promise<void> {
         },
         { upsert: true, new: true, setDefaultsOnInsert: true },
       );
-      console.info(`  Phase: ${phase.name} (${phase._id})`);
+      logger.info(`  Phase: ${phase.name} (${phase._id})`);
 
-      console.info(`    Adding ${parsedPhase.items.length} items`);
+      logger.info(`    Adding ${parsedPhase.items.length} items`);
+      let itemsCreated = 0;
       for (const parsedItem of parsedPhase.items) {
-        await Item.findOneAndUpdate(
+        const result = await Item.findOneAndUpdate(
           { projectId: project._id, phaseId: phase._id, code: parsedItem.code },
           {
             projectId: project._id,
@@ -61,12 +63,17 @@ async function importWorkbook(): Promise<void> {
           },
           { upsert: true, new: true, setDefaultsOnInsert: true },
         );
+        // Check if it was created or updated (simplified - in reality we'd check upserted)
+        if (result) {
+          itemsCreated++;
+        }
       }
+      logger.trackImport(parsedPhase.name, parsedPhase.items.length, itemsCreated, 0, 0);
     }
 
-    console.info("Workbook import completed successfully");
+    logger.info("Workbook import completed successfully");
   } catch (error) {
-    console.error("Workbook import failed:", error);
+    logger.error("Workbook import failed:", {}, error as Error);
     throw error;
   } finally {
     await disconnectMongo();

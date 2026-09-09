@@ -5,7 +5,7 @@ dotenv.config();
 interface Config {
   port: number;
   mongodbUri: string;
-  corsOrigin: string;
+  corsOrigins: string[];
   nodeEnv: string;
   sourceWorkbookPath: string;
 }
@@ -31,10 +31,13 @@ function validateEnv(): Config {
     throw new Error("PORT must be a valid number");
   }
 
+  // Support multiple CORS origins (comma-separated)
+  const corsOrigins = process.env.CORS_ORIGIN!.split(",").map((o) => o.trim());
+
   return {
     port,
     mongodbUri: process.env.MONGODB_URI!,
-    corsOrigin: process.env.CORS_ORIGIN!,
+    corsOrigins,
     nodeEnv: process.env.NODE_ENV!,
     sourceWorkbookPath: process.env.SOURCE_WORKBOOK_PATH!,
   };

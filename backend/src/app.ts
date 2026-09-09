@@ -9,14 +9,16 @@ import dashboardRoutes from "./routes/dashboardRoutes.js";
 import phaseRoutes from "./routes/phaseRoutes.js";
 import itemRoutes from "./routes/itemRoutes.js";
 import { errorHandler, notFoundHandler } from "./middleware/errorHandler.js";
+import { requestLogger } from "./middleware/requestLogger.js";
 
 export function createApp(): express.Application {
   const app = express();
 
   app.use(helmet());
-  app.use(cors({ origin: config.corsOrigin, credentials: true }));
+  app.use(cors({ origin: config.corsOrigins, credentials: true }));
   app.use(express.json({ limit: "1mb" }));
   app.use(morgan(config.nodeEnv === "production" ? "combined" : "dev"));
+  app.use(requestLogger);
 
   // API routes
   app.use("/api/v1", healthRoutes);

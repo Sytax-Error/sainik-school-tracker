@@ -4,6 +4,7 @@ import { Phase } from "../models/Phase.js";
 import { Item } from "../models/Item.js";
 import { successResponse } from "../utils/apiResponse.js";
 import { NotFoundError } from "../errors/index.js";
+import { logger } from "../utils/logger.js";
 
 export async function getDashboard(
   _req: Request,
@@ -96,4 +97,11 @@ export async function getDashboard(
       phases: phaseBreakdown,
     }),
   );
+
+  logger.trackOperation("get_dashboard", {
+    projectCode: "SAINIK",
+    totalItems,
+    totalValue,
+    overallProgress,
+  });
 }

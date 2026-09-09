@@ -5,6 +5,7 @@ import { Item } from "../models/Item.js";
 import { successResponse } from "../utils/apiResponse.js";
 import { NotFoundError } from "../errors/index.js";
 import { phaseIdParamSchema } from "../validators/schemas.js";
+import { logger } from "../utils/logger.js";
 
 export async function getPhases(req: Request, res: Response): Promise<void> {
   const project = await Project.findOne({ code: "SAINIK" }).lean();
@@ -43,6 +44,8 @@ export async function getPhases(req: Request, res: Response): Promise<void> {
       progressPercent,
     };
   });
+
+  logger.trackOperation("get_phases", { projectCode: "SAINIK", phaseCount: phases.length });
 
   res.json(successResponse(phasesWithCounts));
 }

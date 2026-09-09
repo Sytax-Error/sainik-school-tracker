@@ -2,14 +2,20 @@ import type { Request, Response, NextFunction } from "express";
 import { ZodError } from "zod";
 import { AppError } from "../errors/index.js";
 import { errorResponse } from "../utils/apiResponse.js";
+import { logger } from "../utils/logger.js";
 
 export function errorHandler(
   err: Error,
-  _req: Request,
+  req: Request,
   res: Response,
   _next: NextFunction,
 ): void {
-  console.error("Error:", err);
+  logger.error("Request error", {
+    method: req.method,
+    path: req.path,
+    error: err.message,
+    stack: err.stack,
+  }, err);
 
   if (err instanceof ZodError) {
     const details = err.errors.map((e) => ({
@@ -41,6 +47,7 @@ export function errorHandler(
     .json(errorResponse("INTERNAL_ERROR", "An unexpected error occurred"));
 }
 
-export function notFoundHandler(_req: Request, res: Response): void {
+export function notFoundHandler(req: Request, res: Response): void {
+  logger.warn("Route not found", { method: req.method, path: req.path });
   res.status(404).json(errorResponse("NOT_FOUND", "Route not found"));
 }

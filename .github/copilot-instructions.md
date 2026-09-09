@@ -486,6 +486,60 @@ npm run seed
 
 Do not claim a command passed unless it was actually run successfully.
 
+## Logging System
+
+The backend includes a comprehensive logging system using **Winston** with **daily log rotation**.
+
+### Log Files (persisted via Docker volume `./backend/logs:/app/logs`)
+
+| File | Retention | Purpose |
+|------|-----------|---------|
+| `application-YYYY-MM-DD.log` | 30 days | All application logs (debug, info, warn, error) |
+| `error-YYYY-MM-DD.log` | 30 days | Errors only |
+| `audit-YYYY-MM-DD.log` | 90 days | **Record change audit trail** (progress updates, status changes) |
+
+### Logger Usage
+
+```typescript
+import { logger } from "../utils/logger.js";
+
+// Business operations
+logger.trackOperation("get_dashboard", { projectCode: "SAINIK", totalItems: 102 });
+
+// Record changes (audit trail) - automatically goes to audit log
+logger.trackRecordChange("Item", itemId, "progress_update", {
+  progressPercent: 25,
+  status: "IN_PROGRESS",
+  deliveredQty: 1,
+  remarks: "Partial delivery received",
+});
+
+// API requests (auto-logged by requestLogger middleware)
+logger.trackApiRequest("GET", "/dashboard", 200, 5);
+
+// Errors
+logger.error("Failed to update item", { itemId }, error);
+```
+
+### Key Features
+
+- **Structured JSON** in production, pretty-printed in development
+- **Automatic API request logging** via `requestLogger` middleware
+- **Audit trail** for all record modifications (trackRecordChange)
+- **ESLint compliant** (uses console.warn/error only)
+- **Docker volume persistence** — logs survive container restarts
+
+### Accessing Logs
+
+```bash
+# On host (with volume mount)
+cat backend/logs/application-2026-08-24.log
+cat backend/logs/audit-2026-08-24.log
+
+# Inside container
+docker exec sainik-tracker-backend-dev cat /app/logs/audit-2026-08-24.log
+```
+
 # Modern Premium UI Redesign Rules
 
 When a task requests a modern, stylish, premium, or complete UI redesign, do NOT perform a CSS-only update.

@@ -68,3 +68,25 @@ Copilot must update this checklist after each completed phase.
 - [x] Verify workbook remains unmodified.
 - [x] Run complete local setup from a clean state.
 - [x] Record known limitations and next-phase ideas.
+
+## Phase 6 — Logging & Audit Trail
+
+- [x] Add Winston + winston-daily-rotate-file dependencies.
+- [x] Create centralized `logger` utility (`src/utils/logger.ts`).
+- [x] Implement structured JSON logging with levels (debug, info, warn, error).
+- [x] Add file-based persistence with daily rotation.
+- [x] Configure three log files: application (30d), error (30d), audit (90d).
+- [x] Add specialized tracking methods:
+  - `trackOperation()` for business operations
+  - `trackRecordChange()` for audit trail (record modifications)
+  - `trackApiRequest()` for API request logging
+  - `trackImport()` for workbook import tracking
+- [x] Create `requestLogger` middleware for automatic API request logging.
+- [x] Integrate logger across all controllers (health, project, dashboard, phase, item).
+- [x] Enhance error handler with contextual logging.
+- [x] Update import script with import tracking.
+- [x] Add Docker volume mount for log persistence (`./backend/logs:/app/logs`).
+- [x] Fix ESLint compliance (no-console rule).
+- [x] Verify lint, type-check, and build pass.
+- [x] Test audit trail with progress updates.
+- [x] Document logging system in copilot-instructions.md and backend.instructions.md.

@@ -318,3 +318,54 @@ Add package scripts similar to:
 ```
 
 The seed script must be safe to run multiple times.
+
+## Logging
+
+Use the centralized `logger` utility from `src/utils/logger.ts` for all application logging.
+
+### Logger Features
+
+- **Structured JSON output** in production, pretty-printed in development
+- **Log levels**: debug, info, warn, error
+- **File-based persistence** with daily rotation (Winston + winston-daily-rotate-file)
+- **Specialized tracking methods**:
+  - `trackOperation(operation, details)` — business operations
+  - `trackRecordChange(recordType, recordId, action, changes)` — audit trail for record modifications
+  - `trackApiRequest(method, path, statusCode, durationMs, userId)` — API request logging
+  - `trackImport(phase, itemsProcessed, itemsCreated, itemsUpdated, itemsSkipped)` — workbook import tracking
+
+### Log Files (with volume mount `./backend/logs:/app/logs`)
+
+| File | Retention | Purpose |
+|------|-----------|---------|
+| `application-YYYY-MM-DD.log` | 30 days | All logs |
+| `error-YYYY-MM-DD.log` | 30 days | Errors only |
+| `audit-YYYY-MM-DD.log` | 90 days | Record changes (audit trail) |
+
+### Usage in Controllers
+
+```typescript
+import { logger } from "../utils/logger.js";
+
+// Log operations
+logger.trackOperation("get_dashboard", { projectCode: "SAINIK", totalItems: 102 });
+
+// Log record changes (audit trail)
+logger.trackRecordChange("Item", itemId, "progress_update", {
+  progressPercent: updatedItem.progressPercent,
+  status: updatedItem.status,
+  deliveredQty: updatedItem.deliveredQty,
+  remarks: updatedItem.remarks,
+});
+
+// Log errors with context
+logger.error("Failed to update item", { itemId }, error);
+```
+
+### Request Logging Middleware
+
+The `requestLogger` middleware (`src/middleware/requestLogger.ts`) automatically logs all API requests with method, path, status code, and duration.
+
+### ESLint Compliance
+
+The logger uses `console.warn` for info/debug and `console.error` for warn/error to comply with the `no-console` rule (only warn/error allowed).

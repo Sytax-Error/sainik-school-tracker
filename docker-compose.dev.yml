@@ -26,13 +26,14 @@ services:
       - PORT=5000
       - NODE_ENV=development
       - MONGODB_URI=mongodb://mongodb:27017/sainik_tracker
-      - CORS_ORIGIN=http://localhost:5174
+      - CORS_ORIGIN=http://localhost:5174,http://10.200.76.136:5174
       - SOURCE_WORKBOOK_PATH=source-data/Sainik Phase wise Sheets.xls
     volumes:
       - ./backend/src:/app/src
       - ./backend/package.json:/app/package.json
       - ./backend/tsconfig.json:/app/tsconfig.json
       - ./source-data:/app/source-data
+      - ./backend/logs:/app/logs
     depends_on:
       mongodb:
         condition: service_healthy

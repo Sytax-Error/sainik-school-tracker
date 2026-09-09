@@ -7,6 +7,7 @@ import {
   itemIdParamSchema,
   updateProgressSchema,
 } from "../validators/schemas.js";
+import { logger } from "../utils/logger.js";
 
 export async function getItems(req: Request, res: Response): Promise<void> {
   const query = itemListQuerySchema.parse(req.query);
@@ -131,6 +132,17 @@ export async function updateItemProgress(
   if (!updatedItem) {
     throw new NotFoundError("Item not found");
   }
+
+  // Log the record change
+  logger.trackRecordChange("Item", id, "progress_update", {
+    progressPercent: updatedItem.progressPercent,
+    status: updatedItem.status,
+    deliveredQty: updatedItem.deliveredQty,
+    installedQty: updatedItem.installedQty,
+    testedQty: updatedItem.testedQty,
+    acceptedQty: updatedItem.acceptedQty,
+    remarks: updatedItem.remarks,
+  });
 
   res.json(successResponse(updatedItem));
 }
